@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.wearapay.myapplication.ItemFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    >
+  <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+      android:id="@+id/refreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.wearapay.lightning.ui.fragment.ItemFragment"
+        tools:listitem="@layout/fragment_item"
+        />
+  </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+  <FrameLayout
+      android:id="@+id/emptyView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      >
+    <include
+        layout="@layout/empty_view"
+        />
+  </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,76 @@
+<resources>
+  <string name="app_name">ITSM</string>
+  <string name="title_activity_main2">Main2Activity</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="action_settings">Settings</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_activity_login">Sign in</string>
+
+  <string name="title_company">上海易码信息技术有限公司</string>
+  <string name="title_email_suffix">wearapay.com</string>
+
+  <!-- Strings related to login -->
+  <string name="prompt_email">请输入账号</string>
+  <string name="prompt_password">请输入密码</string>
+  <string name="action_sign_in">登录</string>
+  <string name="action_yes">认领</string>
+  <string name="action_yes_info">输入备注</string>
+  <string name="action_sign_in_short">登录</string>
+  <string name="error_invalid_email">账号格式不对</string>
+  <string name="error_invalid_password">密码长度不对</string>
+  <string name="error_incorrect_password">密码错误</string>
+  <string name="error_field_required">请输入账号与密码在登录</string>
+  <string name="permission_rationale">"Contacts permissions are needed for providing email
+    completions."
+  </string>
+  <string name="title_activity_member_details">MemberDetailsActivity</string>
+
+  <string name="title_activity_item_details">ItemDetailsActivity</string>
+  <string name="title_activity_exit">再按一次退出应程序</string>
+
+  <string name="item_yes_alarm">认领报警</string>
+  <string name="item_close_alarm">关闭报警</string>
+  <string name="item_alarm">报警</string>
+  <string name="item_yes">认领</string>
+  <string name="item_close">关闭</string>
+  <string name="item_event_no_exist">事件不存在</string>
+  <string name="item_user_no_exist">用户不存在</string>
+  <string name="item_phone_no_exist">没有手机号</string>
+  <string name="item_email_no_exist">没有邮箱</string>
+  <string name="item_tab_mine">我的</string>
+  <string name="item_tab_all">全部</string>
+  <string name="item_header_email_no_login">请登录</string>
+
+  <string name="toolbar_alarm_details_title">报警详情</string>
+
+
+  <string name="item_alarm_name">名称:%s</string>
+  <string name="item_alarm_level">事件级别:%s</string>
+  <string name="item_alarm_deal_people">处理人:%s</string>
+  <string name="item_alarm_continue_time">持续时长:%s</string>
+  <string name="item_alarm_time">报警:%s</string>
+  <string name="item_alarm_deal_time">处理:%s</string>
+  <string name="item_alarm_complete_time">解决:%s</string>
+
+  <string name="item_alarm_level_time">%d级事件</string>
+  <string name="item_alarm_count">%d次</string>
+  <string name="item_alarm_level_item">%d级</string>
+  <string name="item_alarm_handle_name">分配给:%s</string>
+
+
+  <!--error code -->
+  <string name="error_network">网络异常</string>
+  <string name="error.missing.field">请求中缺少必要参数</string>
+  <string name="error.user.token.expired">登录过期</string>
+  <string name="e.general">未知错误</string>
+  <string name="error.no.login">没有登录</string>
+  <string name="error.login.failed">登录失败</string>
+  <string name="error.unkonwn.user">不知道的用户</string>
+  <string name="action_empty">空空如也</string>
+
+</resources>

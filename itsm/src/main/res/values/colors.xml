@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#4CAF50</color>
+  <color name="colorPrimaryDark">#2CAF50</color>
+  <color name="colorAccent">#62BA04</color>
+  <color name="black">#000000</color>
+  <color name="white">#ffffff</color>
+  <color name="highlight">#62BA04</color>
+  <color name="light">#05944F</color>
+  <color name="primary">#05931A</color>
+  <color name="progress_dialog_bg">#7762BA04</color>
+</resources>

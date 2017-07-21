@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wearapay.lightning.ui.fragment.SettingFragment"
+    >
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/iv_icon"
+      android:gravity="center"
+      android:textColor="@color/black"
+      android:layout_marginTop="30dp"
+      android:text="ITSM_incident v1.0.0"
+      />
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginBottom="20dp"
+      android:gravity="center"
+      android:text="@string/title_company"
+      android:textSize="12sp"
+      />
+  <ImageView
+      android:id="@+id/iv_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@mipmap/ic_launcher"
+      android:layout_marginTop="208dp"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      />
+
+
+</RelativeLayout>

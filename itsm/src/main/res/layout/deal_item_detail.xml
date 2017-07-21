@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+  <TextView
+      android:id="@+id/tvItemEvent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      android:text="@string/item_alarm_name"
+      android:textColor="@color/black"
+      />
+
+  <LinearLayout
+      android:id="@+id/llName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      >
+
+    <TextView
+        android:id="@+id/tvItemLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:text="@string/item_alarm_level"
+        android:textColor="@color/black"
+        />
+    <TextView
+        android:id="@+id/tvItemCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/text_bg"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:singleLine="true"
+        android:text="@string/item_alarm_count"
+        android:textColor="@color/black"
+        />
+  </LinearLayout>
+
+
+  <TextView
+      android:id="@+id/tvItemPeople"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      android:text="@string/item_alarm_deal_people"
+      android:textColor="@color/black"
+      />
+  <TextView
+      android:id="@+id/tvItemContinue"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      android:text="@string/item_alarm_continue_time"
+      android:textColor="@color/black"
+      />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      android:text="ZAbbix server"
+      >
+
+    <TextView
+        android:id="@+id/tvItemAlarmTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/item_alarm_time"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/tvItemDealTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_weight="1"
+        android:text="@string/item_alarm_deal_time"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/tvItemCompleteTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_weight="1"
+        android:text="@string/item_alarm_complete_time"
+        android:textColor="@color/black"
+        />
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/llMemory"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="5dp"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingEnd="5dp"
+      android:paddingStart="5dp"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="内容:"
+        android:textColor="@color/black"
+        />
+    <TextView
+        android:id="@+id/tvContentTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        />
+    <TextView
+        android:id="@+id/tvContentIP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        />
+    <TextView
+        android:id="@+id/tvContentServer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        />
+  </LinearLayout>
+
+
+  <View
+      android:id="@+id/viewLine"
+      android:layout_width="match_parent"
+      android:layout_height="0.5dp"
+      android:layout_below="@+id/tvItemMan"
+      android:layout_marginEnd="5dp"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="10dp"
+      android:background="@color/colorPrimary"
+      />
+
+</LinearLayout>

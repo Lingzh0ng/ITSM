@@ -1,0 +1,96 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.wearapay.lightning.HomeActivity"
+    >
+
+  <android.support.design.widget.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:theme="@style/AppTheme.AppBarOverlay"
+      >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        />
+
+  </android.support.design.widget.AppBarLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/activity_vertical_margin"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      android:paddingTop="@dimen/activity_vertical_margin"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      >
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/pbClaim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:indeterminateDrawable="@drawable/progress_bar"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        />
+
+    <ScrollView
+        android:id="@+id/sl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+      <LinearLayout
+          android:id="@+id/llClaimForm"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+
+        <EditText
+            android:id="@+id/editInfo"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/text_bg"
+            android:gravity="top|left"
+            android:hint="@string/action_yes_info"
+            android:padding="@dimen/fab_margin"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            />
+
+
+        <Button
+            android:id="@+id/btnItemClaim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_selector"
+            android:text="@string/action_yes"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            style="?android:textAppearanceSmall"
+            />
+
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+
+
