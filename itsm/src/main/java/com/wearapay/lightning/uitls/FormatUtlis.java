@@ -1,6 +1,7 @@
 package com.wearapay.lightning.uitls;
 
 import android.text.TextUtils;
+import android.widget.TextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,4 +32,13 @@ public class FormatUtlis {
     long longFormatTime = getLongFormatTime(date, oldFormat);
     return getStringFormatTime(longFormatTime, newFormat);
   }
+
+  public static void setText(TextView textView, String str) {
+    textView.setText(String.format(textView.getText().toString(), str));
+  }
+
+  public static void setText(TextView textView, int str) {
+    textView.setText(String.format(textView.getText().toString(), str));
+  }
+
 }

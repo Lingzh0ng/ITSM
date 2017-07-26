@@ -16,6 +16,16 @@ public class UserConfDto implements Serializable {
   private String configuePosition;
   private String team;
   private String phone;
+  private String weChatId;
+  private String email;
+
+  public String getWeChatId() {
+    return weChatId;
+  }
+
+  public void setWeChatId(String weChatId) {
+    this.weChatId = weChatId;
+  }
 
   public String getEmail() {
     return email;
@@ -32,8 +42,6 @@ public class UserConfDto implements Serializable {
   public void setTeam(String team) {
     this.team = team;
   }
-
-  private String email;
 
   @Override public String toString() {
     return "UserConfDto{" +

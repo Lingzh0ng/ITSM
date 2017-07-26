@@ -14,6 +14,10 @@
         android:id="@+id/nav_dealed"
         android:icon="@drawable/done"
         android:title="已解决"/>
+    <item
+        android:id="@+id/nav_statistical"
+        android:icon="@drawable/setting"
+        android:title="统计"/>
   </group>
 
   <group
@@ -21,12 +25,20 @@
       android:checkableBehavior="single"
       >
     <item
+        android:id="@+id/nav_release"
+        android:icon="@drawable/setting"
+        android:title="发布"/>
+    <item
+        android:id="@+id/nav_change"
+        android:icon="@drawable/setting"
+        android:title="审变更"/>
+    <item
         android:id="@+id/nav_people"
         android:icon="@drawable/people"
         android:title="成员"/>
     <item
         android:id="@+id/nav_set"
-        android:icon="@drawable/ic_menu_compass"
+        android:icon="@drawable/setting"
         android:title="设置"/>
   </group>
 

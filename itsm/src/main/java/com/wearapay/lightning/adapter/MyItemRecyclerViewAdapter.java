@@ -47,7 +47,7 @@ public class MyItemRecyclerViewAdapter
   }
 
   @Override public int getItemCount() {
-    return mValues.size();
+    return mValues == null ? 0 : mValues.size();
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder {
@@ -85,7 +85,7 @@ public class MyItemRecyclerViewAdapter
       tvItemTitle.setText(mItem.getAlarmType());
       tvItemTime.setText(
           FormatUtlis.chargeStringFormatTime(mItem.getAlarmCreationTime(), "yyyy-MM-dd hh:mm:ss",
-              "MM/dd hh:mm"));
+              "MM/dd HH:mm"));
       tvItemEvent.setText(
           String.format(App.app.getString(R.string.item_alarm_level_time), mItem.getLevel()));
       tvItemType.setText(mItem.getProcessingType());

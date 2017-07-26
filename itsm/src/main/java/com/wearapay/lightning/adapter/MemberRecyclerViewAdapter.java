@@ -10,12 +10,14 @@ import com.wearapay.lightning.R;
 import com.wearapay.lightning.bean.UserConfDto;
 import java.util.List;
 
-public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecyclerViewAdapter.ViewHolder> {
+public class MemberRecyclerViewAdapter
+    extends RecyclerView.Adapter<MemberRecyclerViewAdapter.ViewHolder> {
 
   private final List<UserConfDto> mValues;
   private final OnListFragmentInteractionListener mListener;
 
-  public MemberRecyclerViewAdapter(List<UserConfDto> items, OnListFragmentInteractionListener listener) {
+  public MemberRecyclerViewAdapter(List<UserConfDto> items,
+      OnListFragmentInteractionListener listener) {
     mValues = items;
     mListener = listener;
   }
@@ -42,7 +44,7 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
   }
 
   @Override public int getItemCount() {
-    return mValues.size();
+    return mValues == null ? 0 : mValues.size();
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,7 +54,7 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
 
     public ViewHolder(View view) {
       super(view);
-      ButterKnife.bind(this,view);
+      ButterKnife.bind(this, view);
       mView = view;
       mIdView = (TextView) view.findViewById(R.id.tvItemName);
     }

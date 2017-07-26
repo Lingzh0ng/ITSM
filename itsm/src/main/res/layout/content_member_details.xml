@@ -125,6 +125,16 @@
           android:layout_centerVertical="true"
           android:text="未绑定"
           />
+      <ImageView
+          android:id="@+id/ivWeChat"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_alignParentEnd="true"
+          android:layout_centerVertical="true"
+          android:layout_marginEnd="18dp"
+          android:scaleType="fitCenter"
+          android:src="@drawable/wechat"
+          />
     </RelativeLayout>
 
   </LinearLayout>

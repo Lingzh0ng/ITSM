@@ -65,19 +65,19 @@ public class ItemDetailsActivity extends BaseActivity {
 
     if (incidentDto != null) {
 
-      setText(tvItemEvent, incidentDto.getAlarmContent());
-      setText(tvItemLevel,
+      FormatUtlis.setText(tvItemEvent, incidentDto.getAlarmContent());
+      FormatUtlis.setText(tvItemLevel,
           String.format(getString(R.string.item_alarm_level_item), incidentDto.getLevel()));
-      setText(tvItemCount, incidentDto.getIncidentCount());
-      setText(tvItemPeople, incidentDto.getHandlingName());
-      setText(tvItemAlarmTime,
+      FormatUtlis.setText(tvItemCount, incidentDto.getIncidentCount());
+      FormatUtlis.setText(tvItemPeople, incidentDto.getHandlingName());
+      FormatUtlis.setText(tvItemAlarmTime,
           FormatUtlis.chargeStringFormatTime(incidentDto.getAlarmCreationTime(),
-              "yyyy-MM-dd hh:mm:ss", "MM/dd hh:mm"));
-      setText(tvItemDealTime, FormatUtlis.chargeStringFormatTime(incidentDto.getHandlingStartTime(),
-          "yyyy-MM-dd hh:mm:ss", "MM/dd hh:mm"));
-      setText(tvItemCompleteTime,
+              "yyyy-MM-dd HH:mm:ss", "MM/dd HH:mm"));
+      FormatUtlis.setText(tvItemDealTime, FormatUtlis.chargeStringFormatTime(incidentDto.getHandlingStartTime(),
+          "yyyy-MM-dd HH:mm:ss", "MM/dd HH:mm"));
+      FormatUtlis.setText(tvItemCompleteTime,
           FormatUtlis.chargeStringFormatTime(incidentDto.getHandlingEndTime(),
-              "yyyy-MM-dd hh:mm:ss", "MM/dd hh:mm"));
+              "yyyy-MM-dd HH:mm:ss", "MM/dd HH:mm"));
       tvContentTitle.setText(incidentDto.getBusinessName());
       tvContentIP.setText(incidentDto.getEntityIp());
       tvContentServer.setText(incidentDto.getEntityName());
@@ -85,7 +85,7 @@ public class ItemDetailsActivity extends BaseActivity {
       if (TextUtils.isEmpty(incidentDto.getHandlingEndTime())) {
         tvItemContinue.setVisibility(View.GONE);
       } else {
-        setText(tvItemContinue, incidentDto.getAlarmDuration());
+        FormatUtlis.setText(tvItemContinue, incidentDto.getAlarmDuration());
       }
 
       if (!TextUtils.isEmpty(incidentDto.getRemark())) {
@@ -113,13 +113,6 @@ public class ItemDetailsActivity extends BaseActivity {
     }
   }
 
-  private void setText(TextView textView, String str) {
-    textView.setText(String.format(textView.getText().toString(), str));
-  }
-
-  private void setText(TextView textView, int str) {
-    textView.setText(String.format(textView.getText().toString(), str));
-  }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {

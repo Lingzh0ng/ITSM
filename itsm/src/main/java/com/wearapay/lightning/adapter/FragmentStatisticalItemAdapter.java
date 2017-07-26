@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.wearapay.lightning.App;
 import com.wearapay.lightning.R;
-import com.wearapay.lightning.ui.fragment.ItemFragment;
+import com.wearapay.lightning.ui.fragment.statistical.StatisticalItemFragment;
 import java.util.List;
 
 /**
  * Created by lyz54 on 2017/6/28.
  */
 
-public class FragmentItemAdapter extends FragmentPagerAdapter {
-  List<ItemFragment> list;
+public class FragmentStatisticalItemAdapter extends FragmentPagerAdapter {
+  List<StatisticalItemFragment> list;
 
-  public FragmentItemAdapter(FragmentManager fm, List<ItemFragment> list) {
+  public FragmentStatisticalItemAdapter(FragmentManager fm, List<StatisticalItemFragment> list) {
     super(fm);
     this.list = list;
   }
@@ -44,9 +44,12 @@ public class FragmentItemAdapter extends FragmentPagerAdapter {
 
   @Override public CharSequence getPageTitle(int position) {
     if (position == 0) {
-      return App.app.getString(R.string.item_tab_mine) + format(list.get(position).getItemCount());
+      return App.app.getString(R.string.item_level_one) + format(list.get(position).getItemCount());
+    } else if (position == 1) {
+      return App.app.getString(R.string.item_level_two) + format(list.get(position).getItemCount());
     } else {
-      return App.app.getString(R.string.item_tab_all) + format(list.get(position).getItemCount());
+      return App.app.getString(R.string.item_level_three) + format(
+          list.get(position).getItemCount());
     }
   }
 

@@ -25,6 +25,7 @@ import com.wearapay.lightning.ui.LoginActivity;
 import com.wearapay.lightning.ui.fragment.BlankFragment;
 import com.wearapay.lightning.ui.fragment.MemberFragment;
 import com.wearapay.lightning.ui.fragment.SettingFragment;
+import com.wearapay.lightning.ui.fragment.statistical.StatisticalFragment;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
@@ -48,6 +49,9 @@ public class HomeActivity extends BaseActivity
   private TextView tvCompany;
   private TextView tvEmail;
   private ImageView ivHeader;
+  private DrawerLayout drawer;
+
+  private boolean showFragment;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,10 +62,17 @@ public class HomeActivity extends BaseActivity
     toolbar.setBackgroundColor(0x0f00ff);
     setSupportActionBar(toolbar);
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close);
+            R.string.navigation_drawer_close) {
+          @Override public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            System.out.println("drawer open");
+            showFragment = false;
+            getUserEvent();
+          }
+        };
     drawer.setDrawerListener(toggle);
     toggle.syncState();
 
@@ -94,12 +105,13 @@ public class HomeActivity extends BaseActivity
       tvEmail.setText(ApiHelper.getInstance().getEmail());
     }
 
-    supportFragmentManager = getSupportFragmentManager();
+    //navigationView.setLis
 
+    supportFragmentManager = getSupportFragmentManager();
+    showFragment = true;
     getUserEvent();
 
     initRxBus();
-
   }
 
   private void initRxBus() {
@@ -108,6 +120,7 @@ public class HomeActivity extends BaseActivity
         .subscribe(new Consumer<UpdateEvent>() {
           @Override public void accept(@NonNull UpdateEvent o) throws Exception {
             System.out.println(o);
+            showFragment = true;
             getUserEvent();
             if (o.isLogin()) {
               String email = ApiHelper.getInstance().getEmail();
@@ -218,6 +231,12 @@ public class HomeActivity extends BaseActivity
       blankFragment = MemberFragment.newInstance();
     } else if (id == R.id.nav_set) {//设置
       blankFragment = SettingFragment.newInstance();
+    } else if (id == R.id.nav_statistical) {//统计
+      blankFragment = StatisticalFragment.newInstance("11");
+    } else if (id == R.id.nav_release) {//发布
+      return true;
+    } else if (id == R.id.nav_change) {//变更
+      return true;
     }
     fragmentTransaction.replace(R.id.fl, blankFragment);
     fragmentTransaction.commitAllowingStateLoss();
@@ -267,11 +286,11 @@ public class HomeActivity extends BaseActivity
     menu.getItem(2)
         .setTitle(getFormat(menu.getItem(2).toString(), bIncidentCount.getResolvedUser(),
             bIncidentCount.getResolvedAll()));
-
-    displayFragmentPager();
+    if (showFragment) displayFragmentPager();
   }
 
   private void displayFragmentPager() {
+    showFragment = false;
     FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
     Fragment blankFragment =
         BlankFragment.newInstance(menu.getItem(0).toString().split("   ")[0], DealStatus.DEAL_WAIT,
@@ -300,5 +319,4 @@ public class HomeActivity extends BaseActivity
     fragmentTransaction.replace(R.id.fl, blankFragment);
     fragmentTransaction.commitAllowingStateLoss();
   }
-
 }

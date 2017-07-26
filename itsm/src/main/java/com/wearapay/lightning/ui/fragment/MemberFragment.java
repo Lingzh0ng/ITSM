@@ -6,20 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MemberRecyclerViewAdapter;
-import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.base.BaseListFragment;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
@@ -28,11 +22,8 @@ import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberFragment extends BaseFragment {
+public class MemberFragment extends BaseListFragment {
 
-  @BindView(R.id.list) RecyclerView recyclerView;
-  @BindView(R.id.refreshLayout) TwinklingRefreshLayout refreshLayout;
-  @BindView(R.id.emptyView) FrameLayout emptyView;
   private List<UserConfDto> userConfDtos;
   private MemberRecyclerViewAdapter memberRecyclerViewAdapter;
   private Unbinder bind;
@@ -48,36 +39,12 @@ public class MemberFragment extends BaseFragment {
     return fragment;
   }
 
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
-
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_item_member, container, false);
-    userConfDtos = new ArrayList<>();
-    // Set the adapter
-
-    bind = ButterKnife.bind(this, view);
-    return view;
-  }
-
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Context context = view.getContext();
-    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-    recyclerView.addItemDecoration(
-        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-    memberRecyclerViewAdapter = new MemberRecyclerViewAdapter(userConfDtos,
-        new MemberRecyclerViewAdapter.OnListFragmentInteractionListener() {
-          @Override public void onListFragmentInteraction(UserConfDto item) {
-            Toast.makeText(getContext(), item.getName(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), MemberDetailsActivity.class);
-            intent.putExtra("UserConfDto", item);
-            startActivity(intent);
-          }
-        });
-    recyclerView.setAdapter(memberRecyclerViewAdapter);
+    initData();
+  }
+
+  private void initData() {
     refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
       @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
         hideEmpty();
@@ -92,11 +59,30 @@ public class MemberFragment extends BaseFragment {
     refreshLayout.startRefresh();
   }
 
-  private void onFinishRefresh() {
-    if (refreshLayout != null) {
-      refreshLayout.finishRefreshing();
-      refreshLayout.finishLoadmore();
-    }
+  @Override protected void initView() {
+    Context context = getContext();
+    userConfDtos = new ArrayList<>();
+    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    recyclerView.addItemDecoration(
+        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+    memberRecyclerViewAdapter = new MemberRecyclerViewAdapter(userConfDtos,
+        new MemberRecyclerViewAdapter.OnListFragmentInteractionListener() {
+          @Override public void onListFragmentInteraction(UserConfDto item) {
+            Toast.makeText(getContext(), item.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MemberDetailsActivity.class);
+            intent.putExtra("UserConfDto", item);
+            startActivity(intent);
+          }
+        });
+    recyclerView.setAdapter(memberRecyclerViewAdapter);
+  }
+
+  @Override public void fetchData() {
+
+  }
+
+  @Override protected int getLayout() {
+    return R.layout.fragment_item_member;
   }
 
   private void getAllMember() {
@@ -110,7 +96,7 @@ public class MemberFragment extends BaseFragment {
             memberRecyclerViewAdapter.notifyDataSetChanged();
             if (userConfDtos.size() > 0) {
               hideEmpty();
-            }else {
+            } else {
               showEmpty();
             }
           }
@@ -121,14 +107,6 @@ public class MemberFragment extends BaseFragment {
             onFinishRefresh();
           }
         });
-  }
-
-  private void showEmpty() {
-    emptyView.setVisibility(View.VISIBLE);
-  }
-
-  private void hideEmpty() {
-    emptyView.setVisibility(View.GONE);
   }
 
   @Override public void onDestroyView() {

@@ -9,8 +9,10 @@ import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.api.ILightningRestService;
 import com.wearapay.lightning.api.IUserRestService;
+import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
+import com.wearapay.lightning.bean.BIncidentTime;
 import com.wearapay.lightning.bean.BLoginUser;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
@@ -151,6 +153,11 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
   @Override
   public Observable<IncidentDto> updateEventStatus(String id, int status, BIncidentRemark remark) {
     return lightningRestService.updateEventStatus(id, status, remark);
+  }
+
+  @Override public Observable<List<BCountIncidentByTime>> getIncidentByTime(
+       BIncidentTime bIncidentTime) {
+    return lightningRestService.getIncidentByTime(bIncidentTime);
   }
 
   //-----------------------------------------用户网络接口---------------------------------------------

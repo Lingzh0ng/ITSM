@@ -14,7 +14,10 @@ public class LConsts {
 
   public static String ITSM_HSOT = "http://zabbix.wearapay.com/" + ITSM;
 
-  private static final int INCIDENT_OCCUR = 1;
-  private static final int INCIDENT_HANDLE = 2;
-  private static final int INCIDENT_CLOSE = 3;
+  public static final int INCIDENT_OCCUR = 1;
+  public static final int INCIDENT_HANDLE = 2;
+  public static final int INCIDENT_CLOSE = 3;
+
+  public static final long MONTH_TIME = 30 * 24 * 60 * 60 * 1000L;
+  public static final long YEAR_TIME = 12 * MONTH_TIME;
 }

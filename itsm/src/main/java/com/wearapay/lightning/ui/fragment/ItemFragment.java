@@ -3,23 +3,14 @@ package com.wearapay.lightning.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.wearapay.lightning.BPProgressDialog;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MyItemRecyclerViewAdapter;
-import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.base.BaseListFragment;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.net.ApiHelper;
@@ -33,16 +24,13 @@ import java.util.List;
 
 import static com.wearapay.lightning.bean.DealStatus.DEAL_WAIT;
 
-public class ItemFragment extends BaseFragment {
+public class ItemFragment extends BaseListFragment {
 
   // TODO: Customize parameter argument names
   private static final String ARG_COLUMN_COUNT = "column-count";
   private static final String ARG_POSITION = "position";
   private static final String ARG_ITEM_COUNT = "itemCount";
   private static final String ARG_STATUS = "status";
-  @BindView(R.id.list) RecyclerView recyclerView;
-  @BindView(R.id.refreshLayout) TwinklingRefreshLayout refreshLayout;
-  @BindView(R.id.emptyView) FrameLayout emptyView;
   // TODO: Customize parameters
   private int position = 0;
   private int mColumnCount = 1;
@@ -50,7 +38,6 @@ public class ItemFragment extends BaseFragment {
   private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
   private Observable<List<IncidentDto>> eventObservable;
   private int itemCount = 0;
-  private Unbinder bind;
 
   public int getItemCount() {
     return itemCount;
@@ -100,18 +87,9 @@ public class ItemFragment extends BaseFragment {
     System.out.println("onCreate");
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-    bind = ButterKnife.bind(this, view);
-    System.out.println("onCreateView");
-    return view;
-  }
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+  @Override protected void initView() {
     incidentDtos = new ArrayList<>();
-    Context context = view.getContext();
+    Context context = getContext();
     if (mColumnCount <= 1) {
       recyclerView.setLayoutManager(new LinearLayoutManager(context));
     } else {
@@ -141,6 +119,9 @@ public class ItemFragment extends BaseFragment {
           }
         });
     recyclerView.setAdapter(myItemRecyclerViewAdapter);
+  }
+
+  @Override public void fetchData() {
     refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
       @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
         hideEmpty();
@@ -153,6 +134,10 @@ public class ItemFragment extends BaseFragment {
     });
     refreshLayout.setEnableLoadmore(false);
     refreshLayout.startRefresh();
+  }
+
+  @Override protected int getLayout() {
+    return R.layout.fragment_item_list;
   }
 
   private void getEventLists() {
@@ -204,21 +189,6 @@ public class ItemFragment extends BaseFragment {
         }
       });
     }
-  }
-
-  private void onFinishRefresh() {
-    if (refreshLayout != null) {
-      refreshLayout.finishRefreshing();
-      refreshLayout.finishLoadmore();
-    }
-  }
-
-  private void showEmpty() {
-    emptyView.setVisibility(View.VISIBLE);
-  }
-
-  private void hideEmpty() {
-    emptyView.setVisibility(View.GONE);
   }
 
   @Override public void onAttach(Context context) {

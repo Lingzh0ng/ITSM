@@ -42,6 +42,9 @@
   <string name="item_user_no_exist">用户不存在</string>
   <string name="item_phone_no_exist">没有手机号</string>
   <string name="item_email_no_exist">没有邮箱</string>
+  <string name="item_wechat_no_exist">未绑定微信</string>
+  <string name="item_wechat_no_app">请先安装微信</string>
+  <string name="item_wechat_copy">微信账号已复制到剪切板,您可以在微信中粘贴搜索</string>
   <string name="item_tab_mine">我的</string>
   <string name="item_tab_all">全部</string>
   <string name="item_header_email_no_login">请登录</string>
@@ -62,6 +65,15 @@
   <string name="item_alarm_level_item">%d级</string>
   <string name="item_alarm_handle_name">分配给:%s</string>
 
+  <string name="item_level_one">1级</string>
+  <string name="item_level_two">2级</string>
+  <string name="item_level_three">3级</string>
+
+  <string name="item_level_count_error">数据格式不正确</string>
+
+  <string name="item_long_average_time_hint">最长/平均处理时长(h):%1$s/%2$s</string>
+  <string name="item_near_last_day">最近发生日期:%s</string>
+
 
   <!--error code -->
   <string name="error_network">网络异常</string>
@@ -72,5 +84,10 @@
   <string name="error.login.failed">登录失败</string>
   <string name="error.unkonwn.user">不知道的用户</string>
   <string name="action_empty">空空如也</string>
+  <string name="button_clear_date">取消</string>
+  <string name="button_yes_date">确定</string>
+
+  <string name="title_set_start_date">开始时间</string>
+  <string name="title_set_end_date">结束时间</string>
 
 </resources>

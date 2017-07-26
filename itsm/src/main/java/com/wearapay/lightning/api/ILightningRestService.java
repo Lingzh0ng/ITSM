@@ -1,7 +1,9 @@
 package com.wearapay.lightning.api;
 
+import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
+import com.wearapay.lightning.bean.BIncidentTime;
 import com.wearapay.lightning.bean.IncidentDto;
 import io.reactivex.Observable;
 import java.util.List;
@@ -36,4 +38,7 @@ public interface ILightningRestService {
 
   @PUT("app/incident/{id}/{status}") Observable<IncidentDto> updateEventStatus(
       @Path("id") String id, @Path("status") int status, @Body BIncidentRemark remark);
+
+  @PUT("app/incident/getIncidentByTime") Observable<List<BCountIncidentByTime>> getIncidentByTime(
+      @Body BIncidentTime bIncidentTime);
 }

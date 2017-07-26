@@ -63,7 +63,14 @@ public abstract class BaseObserver<T> implements Observer<T> {
           }
         }
       }
+    } else {
+      System.out.println("sever error");
+      handlerError(e);
     }
+  }
+
+  protected void handlerError(Throwable e) {
+
   }
 
   @Override public void onComplete() {

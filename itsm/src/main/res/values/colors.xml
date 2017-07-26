@@ -9,4 +9,9 @@
   <color name="light">#05944F</color>
   <color name="primary">#05931A</color>
   <color name="progress_dialog_bg">#7762BA04</color>
+  <color name="line">#77000000</color>
+
+  <color name="cell_bg_color">@color/white</color>
+
+  <color name="light_gray">#D2D2D2</color>
 </resources>
