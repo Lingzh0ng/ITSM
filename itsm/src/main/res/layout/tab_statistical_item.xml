@@ -12,7 +12,7 @@
       android:layout_height="match_parent"
       android:layout_weight="1"
       android:gravity="center"
-      android:text="本月"
+      android:text="近一月"
       android:textColor="@color/light"
       android:textSize="14sp"
       />
@@ -23,7 +23,7 @@
       android:layout_weight="1"
       android:enabled="true"
       android:gravity="center"
-      android:text="本年"
+      android:text="近一年"
       android:textColor="@color/black"
       android:textSize="14sp"
       />

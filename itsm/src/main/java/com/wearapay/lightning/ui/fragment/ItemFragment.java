@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.wearapay.lightning.BPProgressDialog;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MyItemRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
@@ -17,6 +18,7 @@ import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.EditInfoActivity;
 import com.wearapay.lightning.ui.ItemDetailsActivity;
+import com.wearapay.lightning.uitls.ActivityUtils;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
@@ -116,6 +118,15 @@ public class ItemFragment extends BaseListFragment {
             intent.putExtra("onClickType", EditInfoActivity.CLOSE_TYPE);
             intent.putExtra("IncidentDto", item);
             startActivityForResult(intent, 1);
+          }
+
+          @Override public void onCompileButtonClick(int position, IncidentDto item) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("IncidentDto", item);
+            bundle.putSerializable("dealStatus", dealStatus);
+            bundle.putBoolean("select", true);
+            bundle.putString("title", getString(R.string.toolbar_select_member));
+            ActivityUtils.startFragment(getActivity(), LConsts.FragmentType.Member, bundle);
           }
         });
     recyclerView.setAdapter(myItemRecyclerViewAdapter);

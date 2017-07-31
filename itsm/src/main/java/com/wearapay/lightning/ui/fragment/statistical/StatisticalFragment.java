@@ -101,24 +101,31 @@ public class StatisticalFragment extends BaseFragment {
         new Function<List<BCountIncidentByTime>, ObservableSource<Boolean>>() {
           @Override public ObservableSource<Boolean> apply(
               @NonNull List<BCountIncidentByTime> bCountIncidentByTimes) throws Exception {
+            oneCountInfo.clear();
+            twoCountInfo.clear();
+            threeCountInfo.clear();
             if (bCountIncidentByTimes.size() < 2) {
               return Observable.just(false);
             }
             for (BCountIncidentByTime time : bCountIncidentByTimes) {
+
               switch (time.getLevel()) {
                 case 1:
-                  oneCountInfo.clear();
-                  oneCountInfo.addAll(time.getCountInfo());
+                  if (time.getCountInfo() != null) {
+                    oneCountInfo.addAll(time.getCountInfo());
+                  }
                   one = oneCountInfo.size();
                   break;
                 case 2:
-                  twoCountInfo.clear();
-                  twoCountInfo.addAll(time.getCountInfo());
+                  if (time.getCountInfo() != null) {
+                    twoCountInfo.addAll(time.getCountInfo());
+                  }
                   two = twoCountInfo.size();
                   break;
                 case 3:
-                  threeCountInfo.clear();
-                  threeCountInfo.addAll(time.getCountInfo());
+                  if (time.getCountInfo() != null) {
+                    threeCountInfo.addAll(time.getCountInfo());
+                  }
                   three = threeCountInfo.size();
                   break;
               }
@@ -145,7 +152,6 @@ public class StatisticalFragment extends BaseFragment {
     selfBIncidentTime = new BIncidentTime();
     AppUtils.startOfDate(startTimeCalendar);
     startDatePickerDialog = getStartDatePickerDialog(startTimeCalendar, selfBIncidentTime);
-    AppUtils.endOfDate(endTimeCalendar);
     endDatePickerDialog = getEndDatePickerDialog(endTimeCalendar, selfBIncidentTime);
     vp.setAdapter(
         new FragmentStatisticalItemAdapter(getChildFragmentManager(), statisticalFragments));
@@ -169,7 +175,7 @@ public class StatisticalFragment extends BaseFragment {
         break;
       case R.id.tvYear:
         tvYear.setTextColor(getResources().getColor(R.color.light));
-        initData(new BIncidentTime(currentTimeMillis, currentTimeMillis - LConsts.YEAR_TIME));
+        initData(new BIncidentTime(currentTimeMillis - LConsts.YEAR_TIME, currentTimeMillis));
         break;
       case R.id.tvSelf:
         tvSelf.setTextColor(getResources().getColor(R.color.light));

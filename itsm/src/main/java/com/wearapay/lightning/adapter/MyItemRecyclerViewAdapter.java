@@ -71,6 +71,9 @@ public class MyItemRecyclerViewAdapter
     @BindView(R.id.bntYes) Button bntYes;
     @BindView(R.id.bntClose) Button bntClose;
     @BindView(R.id.llBtns) LinearLayout llBtns;
+    @BindView(R.id.view1) View view1;
+    @BindView(R.id.bntCompile) Button bntCompile;
+
 
     public ViewHolder(View view) {
       super(view);
@@ -107,6 +110,7 @@ public class MyItemRecyclerViewAdapter
           break;
         case DEAL_DOING:
           bntYes.setVisibility(View.GONE);
+          view1.setVisibility(View.GONE);
           break;
         case DEAL_COMPLETE:
           llBtns.setVisibility(View.GONE);
@@ -139,6 +143,14 @@ public class MyItemRecyclerViewAdapter
           }
         }
       });
+
+      bntCompile.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+          if (onHomeItemClickListener != null) {
+            onHomeItemClickListener.onCompileButtonClick(position, mItem);
+          }
+        }
+      });
     }
 
     @Override public String toString() {
@@ -152,5 +164,7 @@ public class MyItemRecyclerViewAdapter
     void onYesButtonClick(int position, IncidentDto item);
 
     void onCloseButtonClick(int position, IncidentDto item);
+
+    void onCompileButtonClick(int position, IncidentDto item);
   }
 }

@@ -10,7 +10,6 @@ import butterknife.ButterKnife;
 import com.wearapay.lightning.App;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.bean.BCountIncident;
-import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.List;
 
 public class StatisticalItemAdapter
@@ -63,14 +62,17 @@ public class StatisticalItemAdapter
 
     public void bindView(BCountIncident mItem) {
       tvItemName.setText(mItem.getAlarmContent());
-      FormatUtlis.setText(tvItemCount, mItem.getIncidentCount());
+      //FormatUtlis.setText(tvItemCount, mItem.getIncidentCount());
+      tvItemCount.setText(
+          String.format(App.app.getString(R.string.item_alarm_count), mItem.getIncidentCount()));
+      tvItemTimeNear.setText(
+          String.format(App.app.getString(R.string.item_near_last_day), mItem.getLastDay()));
       tvItemContent.setText(mItem.getBusinessName());
       tvContentIP.setText(mItem.getEntityIp());
       tvContentServer.setText(mItem.getEntityName());
       String format = String.format(App.app.getString(R.string.item_long_average_time_hint),
           mItem.getLongestTime(), mItem.getAverageTime());
       tvItemTime.setText(format);
-      FormatUtlis.setText(tvItemTimeNear, mItem.getLastDay());
       mView.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
           if (onItemOnClickListener != null) {

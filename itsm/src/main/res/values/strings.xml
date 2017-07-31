@@ -19,6 +19,7 @@
   <string name="prompt_password">请输入密码</string>
   <string name="action_sign_in">登录</string>
   <string name="action_yes">认领</string>
+  <string name="action_compile">分配</string>
   <string name="action_yes_info">输入备注</string>
   <string name="action_sign_in_short">登录</string>
   <string name="error_invalid_email">账号格式不对</string>
@@ -50,6 +51,7 @@
   <string name="item_header_email_no_login">请登录</string>
 
   <string name="toolbar_alarm_details_title">报警详情</string>
+  <string name="toolbar_select_member">分配联系人</string>
 
 
   <string name="item_alarm_name">名称:%s</string>

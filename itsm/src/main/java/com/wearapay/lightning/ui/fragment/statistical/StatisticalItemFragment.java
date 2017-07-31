@@ -9,7 +9,6 @@ import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.StatisticalItemAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
 import com.wearapay.lightning.bean.BCountIncident;
-import com.wearapay.lightning.uitls.ToastUtils;
 import java.util.List;
 
 public class StatisticalItemFragment extends BaseListFragment {
@@ -45,7 +44,7 @@ public class StatisticalItemFragment extends BaseListFragment {
     statisticalItemAdapter.setOnItemOnClickListener(
         new StatisticalItemAdapter.OnItemOnClickListener() {
           @Override public void onItemClick(int position, BCountIncident countIncident) {
-            ToastUtils.showLongSafe("onclick");
+            //ToastUtils.showLongSafe("onclick");
           }
         });
     recyclerView.setAdapter(statisticalItemAdapter);

@@ -41,4 +41,8 @@ public interface ILightningRestService {
 
   @PUT("app/incident/getIncidentByTime") Observable<List<BCountIncidentByTime>> getIncidentByTime(
       @Body BIncidentTime bIncidentTime);
+
+  @PUT("app/incident/{id}/{status}/{userId}") Observable<IncidentDto> eventCompile(
+      @Path("id") String id, @Path("status") int status, @Path("userId") String userId,
+      @Body BIncidentRemark remark);
 }

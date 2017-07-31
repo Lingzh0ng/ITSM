@@ -1,6 +1,5 @@
 package com.wearapay.lightning;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -21,7 +20,6 @@ import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
-import com.wearapay.lightning.ui.LoginActivity;
 import com.wearapay.lightning.ui.fragment.BlankFragment;
 import com.wearapay.lightning.ui.fragment.MemberFragment;
 import com.wearapay.lightning.ui.fragment.SettingFragment;
@@ -78,6 +76,8 @@ public class HomeActivity extends BaseActivity
 
     navigationView = (NavigationView) findViewById(R.id.nav_view);
     menu = navigationView.getMenu();
+    menu.findItem(R.id.nav_release).setVisible(false);
+    menu.findItem(R.id.nav_change).setVisible(false);
     navigationView.setNavigationItemSelectedListener(this);
 
     headerView = navigationView.getHeaderView(0);
@@ -133,18 +133,19 @@ public class HomeActivity extends BaseActivity
 
   @Override protected void onStart() {
     super.onStart();
-    if (ApiHelper.getInstance().loginStatus()) {
-      String email = ApiHelper.getInstance().getEmail();
-      tvEmail.setText(email + "@" + getString(R.string.title_email_suffix));
-      headerView.setOnClickListener(null);
-    } else {
-      tvEmail.setText(R.string.item_header_email_no_login);
-      headerView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-        }
-      });
-    }
+    String email = ApiHelper.getInstance().getEmail();
+    tvEmail.setText(email + "@" + getString(R.string.title_email_suffix));
+    headerView.setOnClickListener(null);
+    //if (ApiHelper.getInstance().loginStatus()) {
+    //
+    //} else {
+    //  tvEmail.setText(R.string.item_header_email_no_login);
+    //  headerView.setOnClickListener(new View.OnClickListener() {
+    //    @Override public void onClick(View v) {
+    //      startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+    //    }
+    //  });
+    //}
   }
 
   @Override protected void onDestroy() {

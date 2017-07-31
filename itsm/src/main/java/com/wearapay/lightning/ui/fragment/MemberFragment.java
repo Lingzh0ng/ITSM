@@ -7,17 +7,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.Toast;
-import butterknife.Unbinder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MemberRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
+import com.wearapay.lightning.bean.BIncidentRemark;
+import com.wearapay.lightning.bean.DealStatus;
+import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.MemberDetailsActivity;
+import com.wearapay.lightning.uitls.RxBus;
+import com.wearapay.lightning.uitls.ToastUtils;
+import com.wearapay.lightning.uitls.event.UpdateEvent;
 import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +31,9 @@ public class MemberFragment extends BaseListFragment {
 
   private List<UserConfDto> userConfDtos;
   private MemberRecyclerViewAdapter memberRecyclerViewAdapter;
-  private Unbinder bind;
+  private IncidentDto incidentDto;
+  private boolean select;
+  private DealStatus dealStatus = DealStatus.DEAL_WAIT;
 
   public MemberFragment() {
   }
@@ -61,6 +68,12 @@ public class MemberFragment extends BaseListFragment {
 
   @Override protected void initView() {
     Context context = getContext();
+    Bundle arguments = getArguments();
+    select = arguments.getBoolean("select");
+    if (select) {
+      incidentDto = (IncidentDto) arguments.getSerializable("IncidentDto");
+      dealStatus = (DealStatus) arguments.getSerializable("dealStatus");
+    }
     userConfDtos = new ArrayList<>();
     recyclerView.setLayoutManager(new LinearLayoutManager(context));
     recyclerView.addItemDecoration(
@@ -68,10 +81,14 @@ public class MemberFragment extends BaseListFragment {
     memberRecyclerViewAdapter = new MemberRecyclerViewAdapter(userConfDtos,
         new MemberRecyclerViewAdapter.OnListFragmentInteractionListener() {
           @Override public void onListFragmentInteraction(UserConfDto item) {
-            Toast.makeText(getContext(), item.getName(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), MemberDetailsActivity.class);
-            intent.putExtra("UserConfDto", item);
-            startActivity(intent);
+            if (select) {
+              ToastUtils.showLongSafe(incidentDto.getBusinessName());
+              eventCompile(item.getId());
+            } else {
+              Intent intent = new Intent(getContext(), MemberDetailsActivity.class);
+              intent.putExtra("UserConfDto", item);
+              startActivity(intent);
+            }
           }
         });
     recyclerView.setAdapter(memberRecyclerViewAdapter);
@@ -83,6 +100,35 @@ public class MemberFragment extends BaseListFragment {
 
   @Override protected int getLayout() {
     return R.layout.fragment_item_member;
+  }
+
+  private void eventCompile(String id) {
+    showProgress();
+    int status = LConsts.INCIDENT_OCCUR;
+    switch (dealStatus) {
+      case DEAL_WAIT:
+        status = LConsts.INCIDENT_OCCUR;
+        break;
+      case DEAL_DOING:
+        status = LConsts.INCIDENT_HANDLE;
+        break;
+    }
+    wrap(ApiHelper.getInstance()
+        .eventCompile(incidentDto.getId(), status, id, new BIncidentRemark())).subscribe(
+        new BaseObserver<IncidentDto>(getActivity()) {
+          @Override public void onNext(@NonNull IncidentDto incidentDto) {
+            super.onNext(incidentDto);
+            RxBus.getInstance().send(new UpdateEvent(true));
+            hideProgress();
+            getActivity().finish();
+          }
+
+          @Override protected void handlerError(Throwable e) {
+            super.handlerError(e);
+            ToastUtils.showLongSafe(R.string.e_general);
+            hideProgress();
+          }
+        });
   }
 
   private void getAllMember() {

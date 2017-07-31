@@ -155,9 +155,14 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     return lightningRestService.updateEventStatus(id, status, remark);
   }
 
-  @Override public Observable<List<BCountIncidentByTime>> getIncidentByTime(
-       BIncidentTime bIncidentTime) {
+  @Override
+  public Observable<List<BCountIncidentByTime>> getIncidentByTime(BIncidentTime bIncidentTime) {
     return lightningRestService.getIncidentByTime(bIncidentTime);
+  }
+
+  @Override public Observable<IncidentDto> eventCompile(String id, int status, String userId,
+      BIncidentRemark remark) {
+    return lightningRestService.eventCompile(id, status, userId, remark);
   }
 
   //-----------------------------------------用户网络接口---------------------------------------------

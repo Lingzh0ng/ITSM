@@ -1,10 +1,30 @@
 package com.wearapay.lightning;
 
+import com.wearapay.lightning.ui.fragment.MemberFragment;
+
 /**
  * Created by lyz on 2017/7/13.
  */
 
 public class LConsts {
+
+  public static String FRAGMENT_TYPE = "fragment_type";
+  public static String CAN_BACK = "can_back";
+
+  public enum FragmentType {
+    Member(MemberFragment.class);
+
+    private Class clazz;
+
+    FragmentType(Class clazz) {
+      this.clazz = clazz;
+    }
+
+    public Class getClazz() {
+      return clazz;
+    }
+  }
+
   public static final String USER_TOKEN = "USER_TOKEN";
   public static final String TOKEN_EXPIRED = "error.user.token.expired";
   public static final String UNKONWN_USER = "error.unkonwn.user";
