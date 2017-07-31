@@ -55,16 +55,16 @@ public class MyItemRecyclerViewAdapter
 
     @BindView(R.id.blank) View blank;
     @BindView(R.id.tvItemNumber) TextView tvItemNumber;
-    @BindView(R.id.tvItemId) TextView tvItemId;
-    @BindView(R.id.tvItemTitle) TextView tvItemTitle;
+    @BindView(R.id.tvItemName) TextView tvItemId;
+    @BindView(R.id.tvItemPeopleName) TextView tvItemTitle;
     @BindView(R.id.tvItemTime) TextView tvItemTime;
-    @BindView(R.id.tvItemEvent) TextView tvItemEvent;
-    @BindView(R.id.tvItemType) TextView tvItemType;
+    @BindView(R.id.tvItemStartTime) TextView tvItemEvent;
+    @BindView(R.id.tvItemEndTime) TextView tvItemType;
     @BindView(R.id.llContent) LinearLayout llContent;
     @BindView(R.id.tvItemServer) TextView tvItemServer;
     @BindView(R.id.tvItemLook) TextView tvItemLook;
     @BindView(R.id.tvItemMemory) TextView tvItemMemory;
-    @BindView(R.id.llMemory) LinearLayout llMemory;
+    @BindView(R.id.tvItemPurpose) LinearLayout llMemory;
     @BindView(R.id.tvItemMan) TextView tvItemMan;
     @BindView(R.id.viewLine) View viewLine;
     @BindView(R.id.tvItemCount) TextView tvItemCount;

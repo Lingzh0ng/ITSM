@@ -52,17 +52,6 @@ public class MemberFragment extends BaseListFragment {
   }
 
   private void initData() {
-    refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
-      @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
-        hideEmpty();
-        getAllMember();
-      }
-
-      @Override public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
-
-      }
-    });
-    refreshLayout.setEnableLoadmore(false);
     refreshLayout.startRefresh();
   }
 
@@ -92,6 +81,18 @@ public class MemberFragment extends BaseListFragment {
           }
         });
     recyclerView.setAdapter(memberRecyclerViewAdapter);
+
+    refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+      @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
+        hideEmpty();
+        getAllMember();
+      }
+
+      @Override public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
+
+      }
+    });
+    refreshLayout.setEnableLoadmore(false);
   }
 
   @Override public void fetchData() {

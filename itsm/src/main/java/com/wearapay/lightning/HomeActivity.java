@@ -23,6 +23,7 @@ import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.fragment.BlankFragment;
 import com.wearapay.lightning.ui.fragment.MemberFragment;
 import com.wearapay.lightning.ui.fragment.SettingFragment;
+import com.wearapay.lightning.ui.fragment.release.ReleaseFragment;
 import com.wearapay.lightning.ui.fragment.statistical.StatisticalFragment;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.ToastUtils;
@@ -76,7 +77,7 @@ public class HomeActivity extends BaseActivity
 
     navigationView = (NavigationView) findViewById(R.id.nav_view);
     menu = navigationView.getMenu();
-    menu.findItem(R.id.nav_release).setVisible(false);
+    //menu.findItem(R.id.nav_release).setVisible(false);
     menu.findItem(R.id.nav_change).setVisible(false);
     navigationView.setNavigationItemSelectedListener(this);
 
@@ -235,7 +236,7 @@ public class HomeActivity extends BaseActivity
     } else if (id == R.id.nav_statistical) {//统计
       blankFragment = StatisticalFragment.newInstance("11");
     } else if (id == R.id.nav_release) {//发布
-      return true;
+      blankFragment = ReleaseFragment.newInstance(3, 10);
     } else if (id == R.id.nav_change) {//变更
       return true;
     }

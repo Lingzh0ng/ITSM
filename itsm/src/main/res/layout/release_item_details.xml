@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+  <TextView
+      android:id="@+id/tvItemPurpose"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="5dp"
+      android:text="变更目的"
+      android:textSize="16sp"
+      />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/tvItemNumber"
+      android:orientation="horizontal"
+      android:padding="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      >
+    <TextView
+        android:id="@+id/tvItemNumber"
+        android:text="12321312"
+        style="@style/release_item_text"
+        />
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:id="@+id/tvItemPeople"
+        android:text="lyz"
+        style="@style/release_item_text"
+        />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/tvItemNumber"
+      android:orientation="horizontal"
+      android:padding="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      >
+    <TextView
+        android:id="@+id/tvItemName"
+        android:text="wopay"
+        style="@style/release_item_text"
+        />
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:id="@+id/tvItemAppName"
+        android:text="wopay"
+        style="@style/release_item_text"
+        />
+
+  </LinearLayout>
+
+
+  <LinearLayout
+      android:id="@+id/llContent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:padding="5dp"
+      android:paddingStart="5dp"
+      android:singleLine="true"
+      >
+    <TextView
+        android:id="@+id/tvItemStartTime"
+        android:text="8/15 22:00"
+        style="@style/release_item_text"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:text="至"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        />
+    <TextView
+        android:id="@+id/tvItemEndTime"
+        android:text="8/16 22:00"
+        style="@style/release_item_text"
+        />
+
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/tvItemIp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:background="@drawable/text_bg"
+      android:padding="5dp"
+      android:text="11.1.111.11"
+      android:textSize="12sp"
+      />
+
+</LinearLayout>

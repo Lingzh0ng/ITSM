@@ -130,9 +130,6 @@ public class ItemFragment extends BaseListFragment {
           }
         });
     recyclerView.setAdapter(myItemRecyclerViewAdapter);
-  }
-
-  @Override public void fetchData() {
     refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
       @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
         hideEmpty();
@@ -144,6 +141,9 @@ public class ItemFragment extends BaseListFragment {
       }
     });
     refreshLayout.setEnableLoadmore(false);
+  }
+
+  @Override public void fetchData() {
     refreshLayout.startRefresh();
   }
 

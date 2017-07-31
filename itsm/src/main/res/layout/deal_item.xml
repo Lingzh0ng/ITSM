@@ -18,7 +18,7 @@
       tools:layout_editor_absoluteX="16dp"
       />
   <TextView
-      android:id="@+id/tvItemTitle"
+      android:id="@+id/tvItemPeopleName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
       android:text="1"
       app:layout_constraintBottom_toTopOf="@+id/view"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+      app:layout_constraintTop_toBottomOf="@+id/tvItemPeopleName"
       tools:layout_constraintBottom_creator="1"
       tools:layout_constraintRight_creator="1"
       tools:layout_constraintTop_creator="1"

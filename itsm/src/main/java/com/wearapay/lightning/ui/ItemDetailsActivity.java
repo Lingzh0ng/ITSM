@@ -26,7 +26,7 @@ public class ItemDetailsActivity extends BaseActivity {
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.app_bar) AppBarLayout appBar;
-  @BindView(R.id.tvItemEvent) TextView tvItemEvent;
+  @BindView(R.id.tvItemStartTime) TextView tvItemEvent;
   @BindView(R.id.tvItemLevel) TextView tvItemLevel;
   @BindView(R.id.tvItemCount) TextView tvItemCount;
   @BindView(R.id.llName) LinearLayout llName;
@@ -37,7 +37,7 @@ public class ItemDetailsActivity extends BaseActivity {
   @BindView(R.id.tvContentTitle) TextView tvContentTitle;
   @BindView(R.id.tvContentIP) TextView tvContentIP;
   @BindView(R.id.tvContentServer) TextView tvContentServer;
-  @BindView(R.id.llMemory) LinearLayout llMemory;
+  @BindView(R.id.tvItemPurpose) LinearLayout llMemory;
   @BindView(R.id.viewLine) View viewLine;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.tvItemContinue) TextView tvItemContinue;
