@@ -27,7 +27,11 @@
     <item
         android:id="@+id/nav_release"
         android:icon="@drawable/setting"
-        android:title="发布"/>
+        android:title="生产发布"/>
+    <item
+        android:id="@+id/nav_release_zsc"
+        android:icon="@drawable/tongji"
+        android:title="准生产发布"/>
     <item
         android:id="@+id/nav_change"
         android:icon="@drawable/setting"

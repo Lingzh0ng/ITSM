@@ -1,15 +1,19 @@
 package com.wearapay.lightning.api;
 
+import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.bean.BChangeCount;
 import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
 import com.wearapay.lightning.bean.BIncidentTime;
 import com.wearapay.lightning.bean.IncidentDto;
+import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -45,4 +49,18 @@ public interface ILightningRestService {
   @PUT("app/incident/{id}/{status}/{userId}") Observable<IncidentDto> eventCompile(
       @Path("id") String id, @Path("status") int status, @Path("userId") String userId,
       @Body BIncidentRemark remark);
+
+  @POST("app/deploy/{changeNo}") Observable<PPResultBean> appDeploy(
+      @Path("changeNo") String changeNo);
+
+  @GET("app/deploy/status/{changeNo}") Observable<BAppAutoDeploy> getDeployStatus(
+      @Path("changeNo") String changeNo);
+
+  @GET("app/deploy/all") Observable<List<BAppAutoDeploy>> getDeployAll();
+
+  @GET("app/deploy/user") Observable<List<BAppAutoDeploy>> getDeployUser();
+
+  @GET("app/deploy/count") Observable<BChangeCount> getDeployCount();
+
+  @GET("app/deploy/finish/{changeNo}") Observable<String> getDeployFinishStatus();
 }

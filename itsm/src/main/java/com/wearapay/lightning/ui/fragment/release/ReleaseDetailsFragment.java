@@ -1,6 +1,5 @@
 package com.wearapay.lightning.ui.fragment.release;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -14,9 +13,13 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
-import com.wearapay.lightning.adapter.ReleaseLogRecyclerViewAdapter;
+import com.wearapay.lightning.adapter.ReleaseStatusRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.bean.BAutoDeployInfo;
+import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +39,15 @@ public class ReleaseDetailsFragment extends BaseFragment {
   @BindView(R.id.list) RecyclerView recyclerView;
   @BindView(R.id.refreshLayout) TwinklingRefreshLayout refreshLayout;
   @BindView(R.id.scrollView) NestedScrollView scrollView;
+  private ReleaseStatusRecyclerViewAdapter releaseStatusRecyclerViewAdapter;
+  private BAppAutoDeploy appAutoDeploy;
+  private LConsts.ReleaseEnvironment environment;
 
-  public static ReleaseDetailsFragment newInstance() {
+  public static ReleaseDetailsFragment newInstance(BAppAutoDeploy appAutoDeploy,
+      LConsts.ReleaseEnvironment environment) {
     ReleaseDetailsFragment fragment = new ReleaseDetailsFragment();
+    fragment.appAutoDeploy = appAutoDeploy;
+    fragment.environment = environment;
     return fragment;
   }
 
@@ -56,23 +65,42 @@ public class ReleaseDetailsFragment extends BaseFragment {
   }
 
   private void initView() {
+    tvItemPurpose.setText(appAutoDeploy.getPurpose());
+    tvItemNumber.setText(appAutoDeploy.getChangeNo());
+    tvItemPeople.setText(appAutoDeploy.getProposer());
+    tvItemStartTime.setText(
+        FormatUtlis.getStringFormatTime(appAutoDeploy.getStartTime(), "MM/dd HH:mm"));
+    tvItemEndTime.setText(
+        FormatUtlis.getStringFormatTime(appAutoDeploy.getEndTime(), "MM/dd HH:mm"));
+    String ip = "";
+    List<BAutoDeployInfo> displayInfo = appAutoDeploy.getDisplayInfo();
+    for (int i = 0; i < displayInfo.size(); i++) {
+      ip += displayInfo.get(i).getIp();
+      if (i == displayInfo.size() - 1) {
+      } else {
+        ip += displayInfo.get(i).getIp() + "\n";
+      }
+    }
+    tvItemIp.setText(ip);
+
     refreshLayout.setEnableLoadmore(false);
     refreshLayout.setEnableRefresh(false);
     List<String> stringList = new ArrayList<>();
     for (int i = 0; i < 15; i++) {
       stringList.add("测试数据" + i);
     }
-    ReleaseLogRecyclerViewAdapter releaseLogRecyclerViewAdapter =
-        new ReleaseLogRecyclerViewAdapter(stringList);
+    releaseStatusRecyclerViewAdapter =
+        new ReleaseStatusRecyclerViewAdapter(getActivity(), stringList);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
     linearLayoutManager.setSmoothScrollbarEnabled(true);
     linearLayoutManager.setAutoMeasureEnabled(true);
-    recyclerView.setBackgroundColor(Color.BLACK);
+    recyclerView.setBackgroundColor(getResources().getColor(R.color.line));
     recyclerView.setLayoutManager(linearLayoutManager);
     recyclerView.setHasFixedSize(true);
     recyclerView.setNestedScrollingEnabled(false);
-    recyclerView.setAdapter(releaseLogRecyclerViewAdapter);
+    recyclerView.setAdapter(releaseStatusRecyclerViewAdapter);
     //scrollView.fullScroll(ScrollView.FOCUS_UP);
+    recyclerView.setFocusable(false);
   }
 
   @Override public void onDestroyView() {

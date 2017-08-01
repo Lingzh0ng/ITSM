@@ -45,7 +45,6 @@
         android:background="@drawable/text_bg"
         android:padding="5dp"
         android:text="范鹏"
-        android:textColor="@color/black"
         android:textSize="12dp"
         />
 
@@ -58,7 +57,6 @@
         android:background="@drawable/text_bg"
         android:padding="5dp"
         android:text="正常"
-        android:textColor="@color/black"
         android:textSize="12dp"
         />
     <TextView
@@ -68,6 +66,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp"
         android:padding="5dp"
+        android:visibility="gone"
         android:text="07-12 09:58"
         android:textSize="12dp"
         />
@@ -87,15 +86,17 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="8/15 22:00"
+          android:background="@drawable/text_bg"
+          android:padding="3dp"
           android:textColor="@color/black"
           android:textSize="12dp"
           />
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="30dp"
-          android:layout_marginStart="30dp"
-          android:text="至"
+          android:layout_marginEnd="10dp"
+          android:layout_marginStart="10dp"
+          android:text="~"
           android:textColor="@color/black"
           android:textSize="12dp"
           />
@@ -104,6 +105,8 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="8/16 22:00"
+          android:background="@drawable/text_bg"
+          android:padding="3dp"
           android:textColor="@color/black"
           android:textSize="12dp"
           />

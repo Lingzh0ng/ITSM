@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.FragmentReleaseAdapter;
 import com.wearapay.lightning.base.BaseFragment;
@@ -27,6 +28,7 @@ public class ReleaseFragment extends BaseFragment {
   private int itemAllCount = 0;
   private FragmentReleaseAdapter fragmentReleaseAdapter;
   private List<ReleaseListFragment> listFragments;
+  private LConsts.ReleaseEnvironment environment = LConsts.ReleaseEnvironment.SC;
 
   public int getItemMyCount() {
     return itemMyCount;
@@ -44,10 +46,12 @@ public class ReleaseFragment extends BaseFragment {
     this.itemAllCount = itemAllCount;
   }
 
-  public static ReleaseFragment newInstance(int itemMyCount, int itemAllCount) {
+  public static ReleaseFragment newInstance(LConsts.ReleaseEnvironment environment, int itemMyCount,
+      int itemAllCount) {
     ReleaseFragment fragment = new ReleaseFragment();
     fragment.itemMyCount = itemMyCount;
     fragment.itemAllCount = itemAllCount;
+    fragment.environment = environment;
     Bundle args = new Bundle();
     fragment.setArguments(args);
     return fragment;
@@ -68,10 +72,8 @@ public class ReleaseFragment extends BaseFragment {
 
   private void initView() {
     listFragments = new ArrayList<>();
-    listFragments.add(
-        ReleaseListFragment.newInstance("", 0, getItemMyCount()));
-    listFragments.add(
-        ReleaseListFragment.newInstance("", 1, getItemAllCount()));
+    listFragments.add(ReleaseListFragment.newInstance(environment, 0, getItemMyCount()));
+    listFragments.add(ReleaseListFragment.newInstance(environment, 1, getItemAllCount()));
     fragmentReleaseAdapter = new FragmentReleaseAdapter(getChildFragmentManager(), listFragments);
     vp.setAdapter(fragmentReleaseAdapter);
     tabs.setupWithViewPager(vp);

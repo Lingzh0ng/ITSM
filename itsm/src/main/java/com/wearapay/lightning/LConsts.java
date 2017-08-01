@@ -25,7 +25,18 @@ public class LConsts {
     }
   }
 
+  public enum ReleaseEnvironment {
+    ZSC,
+    SC;
+  }
+
+  public static String STATUS_WAITING = "STATUS_WAITING";
+  public static String STATUS_PROCESS = "STATUS_PROCESS";
+  public static String STATUS_SUCCESS = "STATUS_SUCCESS";
+  public static String STATUS_FAILED = "STATUS_FAILED";
+
   public static final String USER_TOKEN = "USER_TOKEN";
+  public static final String USER_TOKEN_ZSC = "USER_TOKEN_ZSC";
   public static final String TOKEN_EXPIRED = "error.user.token.expired";
   public static final String UNKONWN_USER = "error.unkonwn.user";
   public static final String ERROR_NETWORK = "error_network";
@@ -33,6 +44,7 @@ public class LConsts {
   public static String ITSM = "itsm/";
 
   public static String ITSM_HSOT = "http://zabbix.wearapay.com/" + ITSM;
+  public static String ITSM_HSOT_ZSC = "http://115.29.114.73:8100/" + ITSM;
 
   public static final int INCIDENT_OCCUR = 1;
   public static final int INCIDENT_HANDLE = 2;

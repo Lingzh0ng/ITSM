@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.bean.BChangeCount;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.net.ApiHelper;
@@ -28,9 +29,11 @@ import com.wearapay.lightning.ui.fragment.statistical.StatisticalFragment;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function3;
 
 public class HomeActivity extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener,
@@ -236,7 +239,11 @@ public class HomeActivity extends BaseActivity
     } else if (id == R.id.nav_statistical) {//统计
       blankFragment = StatisticalFragment.newInstance("11");
     } else if (id == R.id.nav_release) {//发布
-      blankFragment = ReleaseFragment.newInstance(3, 10);
+      blankFragment = ReleaseFragment.newInstance(LConsts.ReleaseEnvironment.SC,
+          bIncidentCount.getUserChangeMgmt(), bIncidentCount.getAllChangeMgmt());
+    } else if (id == R.id.nav_release_zsc) {//准生产
+      blankFragment = ReleaseFragment.newInstance(LConsts.ReleaseEnvironment.ZSC,
+          bIncidentCount.getUserZSCChangeMgmt(), bIncidentCount.getAllZSCChangeMgmt());
     } else if (id == R.id.nav_change) {//变更
       return true;
     }
@@ -253,24 +260,51 @@ public class HomeActivity extends BaseActivity
 
   public void getUserEvent(MenuItem item) {
     showProgress();
-    wrap(ApiHelper.getInstance().getEventCount()).subscribe(
-        new BaseObserver<BIncidentCount>(HomeActivity.this) {
-          @Override public void onNext(@NonNull BIncidentCount bIncidentCount) {
-            super.onNext(bIncidentCount);
-            hideProgress();
-            displayNav(bIncidentCount);
-            if (item != null) {
-              onNavigationItemSelected(item);
-            }
+    wrap(Observable.zip(ApiHelper.getInstance().getEventCount(),
+        ApiHelper.getInstance().getDeployCount(), ApiHelper.getInstance().getZSCDeployCount(),
+        new Function3<BIncidentCount, BChangeCount, BChangeCount, BIncidentCount>() {
+          @Override public BIncidentCount apply(@NonNull BIncidentCount bIncidentCount,
+              @NonNull BChangeCount bChangeCount, @NonNull BChangeCount bChangeCount2)
+              throws Exception {
+            bIncidentCount.setUserChangeMgmt(bChangeCount.getUserChangeMgmt());
+            bIncidentCount.setAllChangeMgmt(bChangeCount.getAllChangeMgmt());
+            bIncidentCount.setUserZSCChangeMgmt(bChangeCount.getUserChangeMgmt());
+            bIncidentCount.setAllZSCChangeMgmt(bChangeCount.getAllChangeMgmt());
+            return bIncidentCount;
           }
+        })).subscribe(new BaseObserver<BIncidentCount>(HomeActivity.this) {
+      @Override public void onError(@NonNull Throwable e) {
+        hideProgress();
+        super.onError(e);
+      }
 
-          @Override public void onError(@NonNull Throwable e) {
-            hideProgress();
-            super.onError(e);
-            //bIncidentCount = new BIncidentCount();
-            //displayNav(bIncidentCount);
-          }
-        });
+      @Override public void onNext(@NonNull BIncidentCount bIncidentCount) {
+        super.onNext(bIncidentCount);
+        hideProgress();
+        displayNav(bIncidentCount);
+        if (item != null) {
+          onNavigationItemSelected(item);
+        }
+      }
+    });
+    //wrap(ApiHelper.getInstance().getEventCount()).subscribe(
+    //    new BaseObserver<BIncidentCount>(HomeActivity.this) {
+    //      @Override public void onNext(@NonNull BIncidentCount bIncidentCount) {
+    //        super.onNext(bIncidentCount);
+    //        hideProgress();
+    //        displayNav(bIncidentCount);
+    //        if (item != null) {
+    //          onNavigationItemSelected(item);
+    //        }
+    //      }
+    //
+    //      @Override public void onError(@NonNull Throwable e) {
+    //        hideProgress();
+    //        super.onError(e);
+    //        //bIncidentCount = new BIncidentCount();
+    //        //displayNav(bIncidentCount);
+    //      }
+    //    });
   }
 
   public void getUserEvent() {
@@ -288,6 +322,12 @@ public class HomeActivity extends BaseActivity
     menu.getItem(2)
         .setTitle(getFormat(menu.getItem(2).toString(), bIncidentCount.getResolvedUser(),
             bIncidentCount.getResolvedAll()));
+    menu.findItem(R.id.nav_release)
+        .setTitle(getFormat(menu.findItem(R.id.nav_release).toString(),
+            bIncidentCount.getUserChangeMgmt(), bIncidentCount.getAllChangeMgmt()));
+    menu.findItem(R.id.nav_release_zsc)
+        .setTitle(getFormat(menu.findItem(R.id.nav_release_zsc).toString(),
+            bIncidentCount.getUserZSCChangeMgmt(), bIncidentCount.getAllZSCChangeMgmt()));
     if (showFragment) displayFragmentPager();
   }
 
@@ -317,6 +357,12 @@ public class HomeActivity extends BaseActivity
       blankFragment = MemberFragment.newInstance();
     } else if (id == R.id.nav_set) {//设置
       blankFragment = SettingFragment.newInstance();
+    } else if (id == R.id.nav_release) {//发布
+      blankFragment = ReleaseFragment.newInstance(LConsts.ReleaseEnvironment.SC,
+          bIncidentCount.getUserChangeMgmt(), bIncidentCount.getAllChangeMgmt());
+    } else if (id == R.id.nav_release_zsc) {//准生产
+      blankFragment = ReleaseFragment.newInstance(LConsts.ReleaseEnvironment.ZSC,
+          bIncidentCount.getUserZSCChangeMgmt(), bIncidentCount.getAllZSCChangeMgmt());
     }
     fragmentTransaction.replace(R.id.fl, blankFragment);
     fragmentTransaction.commitAllowingStateLoss();

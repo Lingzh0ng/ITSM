@@ -100,7 +100,7 @@
         android:singleLine="true"
         android:text="ZAbbix server"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="15dp"
         />
 
     <LinearLayout

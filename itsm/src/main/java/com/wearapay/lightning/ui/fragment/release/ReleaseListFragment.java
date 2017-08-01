@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.ReleaseItemRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
-import com.wearapay.lightning.bean.IncidentDto;
+import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.net.ApiHelper;
+import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.ReleaseDetailsActivity;
 import com.wearapay.lightning.uitls.ToastUtils;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lyz on 2017/7/31.
@@ -21,8 +27,9 @@ public class ReleaseListFragment extends BaseListFragment {
 
   private int itemCount;
   private int position;
-  private ArrayList<IncidentDto> incidentDtos;
+  private ArrayList<BAppAutoDeploy> incidentDtos;
   private ReleaseItemRecyclerViewAdapter releaseItemRecyclerViewAdapter;
+  private LConsts.ReleaseEnvironment environment = LConsts.ReleaseEnvironment.SC;
 
   public int getPosition() {
     return position;
@@ -40,10 +47,12 @@ public class ReleaseListFragment extends BaseListFragment {
     this.itemCount = itemCount;
   }
 
-  public static ReleaseListFragment newInstance(String title, int position, int itemCount) {
+  public static ReleaseListFragment newInstance(LConsts.ReleaseEnvironment environment,
+      int position, int itemCount) {
     ReleaseListFragment fragment = new ReleaseListFragment();
     fragment.setItemCount(itemCount);
     fragment.setPosition(position);
+    fragment.environment = environment;
     Bundle args = new Bundle();
     fragment.setArguments(args);
     return fragment;
@@ -55,17 +64,19 @@ public class ReleaseListFragment extends BaseListFragment {
     recyclerView.setLayoutManager(new LinearLayoutManager(context));
     releaseItemRecyclerViewAdapter = new ReleaseItemRecyclerViewAdapter(incidentDtos, position,
         new ReleaseItemRecyclerViewAdapter.OnReleaseItemClickListener() {
-          @Override public void onItemClick(int position, IncidentDto item) {
+          @Override public void onItemClick(int position, BAppAutoDeploy item) {
 
           }
 
-          @Override public void onReleaseButtonClick(int position, IncidentDto item) {
+          @Override public void onReleaseButtonClick(int position, BAppAutoDeploy item) {
             ToastUtils.showLongSafe("onReleaseButtonClick");
             Intent intent = new Intent(getActivity(), ReleaseDetailsActivity.class);
+            intent.putExtra("BAppAutoDeploy", item);
+            intent.putExtra("environment", environment);
             startActivity(intent);
           }
 
-          @Override public void onCheckButtonClick(int position, IncidentDto item) {
+          @Override public void onCheckButtonClick(int position, BAppAutoDeploy item) {
 
           }
         });
@@ -84,12 +95,39 @@ public class ReleaseListFragment extends BaseListFragment {
   }
 
   private void getReleaseLists() {
-    incidentDtos.clear();
-    for (int i = 0; i < itemCount; i++) {
-      incidentDtos.add(new IncidentDto());
+    Observable<List<BAppAutoDeploy>> observable;
+    if (environment == LConsts.ReleaseEnvironment.SC) {
+      if (position == 0) {
+        observable = ApiHelper.getInstance().getDeployUser();
+      } else {
+        observable = ApiHelper.getInstance().getDeployAll();
+      }
+    } else {
+      if (position == 0) {
+        observable = ApiHelper.getInstance().getZSCDeployUser();
+      } else {
+        observable = ApiHelper.getInstance().getZSCDeployAll();
+      }
     }
-    releaseItemRecyclerViewAdapter.notifyDataSetChanged();
-    refreshLayout.finishRefreshing();
+    wrap(observable).subscribe(new BaseObserver<List<BAppAutoDeploy>>(getActivity()) {
+      @Override public void onNext(@NonNull List<BAppAutoDeploy> bAppAutoDeploys) {
+        super.onNext(bAppAutoDeploys);
+        onFinishRefresh();
+        if (bAppAutoDeploys == null || bAppAutoDeploys.size() == 0) {
+          showEmpty();
+        } else {
+          incidentDtos.clear();
+          incidentDtos.addAll(bAppAutoDeploys);
+          releaseItemRecyclerViewAdapter.notifyDataSetChanged();
+        }
+      }
+
+      @Override public void onError(@NonNull Throwable e) {
+        super.onError(e);
+        onFinishRefresh();
+        showEmpty();
+      }
+    });
   }
 
   @Override public void fetchData() {

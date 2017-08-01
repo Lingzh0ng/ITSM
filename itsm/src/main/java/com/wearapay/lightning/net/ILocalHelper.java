@@ -16,4 +16,9 @@ public interface ILocalHelper {
 
   void storeEmail(String email);
 
+  void storeZSCUserId(String userId);
+
+  String getZSCUserId();
+
+  void storeUserId(String userId, String ZSCUserId);
 }

@@ -9,6 +9,10 @@ import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.api.ILightningRestService;
 import com.wearapay.lightning.api.IUserRestService;
+import com.wearapay.lightning.api.IZSCReleaseRestService;
+import com.wearapay.lightning.api.IZSCUserRestService;
+import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.bean.BChangeCount;
 import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
@@ -18,6 +22,7 @@ import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.exception.NotLoginException;
 import com.wearapay.lightning.net.converter.PPRestConverterFactory;
+import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +41,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  * Created by lyz on 2017/7/12.
  */
 
-public class ApiHelper implements ILightningRestService, IUserRestService, ILocalHelper {
+public class ApiHelper
+    implements ILightningRestService, IUserRestService, IZSCReleaseRestService, IZSCUserRestService,
+    ILocalHelper {
 
   private Context appContext;
 
@@ -47,6 +54,8 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
   public static String GANKIO_HSOT = "http://gank.io/api/";
 
   private boolean isLogining = false;
+  private IZSCReleaseRestService zscReleaseRestService;
+  private IZSCUserRestService zscLoginRetrofit;
 
   private ApiHelper() {
   }
@@ -63,6 +72,8 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     this.appContext = appContext;
     this.lightningRestService = getAndInitEventRetrofit(getOkHttpClient(appContext));
     this.userRestService = getAndInitUserRetrofit(getOkHttpClient(appContext));
+    this.zscLoginRetrofit = getAndInitZSCLoginRetrofit(getZSCOkHttpClient(appContext));
+    this.zscReleaseRestService = getAndInitZSCRetrofit(getZSCOkHttpClient(appContext));
     this.sharedPreferences = appContext.getSharedPreferences("Light_SP", Context.MODE_PRIVATE);
   }
 
@@ -75,9 +86,37 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
         //登录判断
         if (!loginStatus()) {
           if (!isLogining) throw new NotLoginException(context.getString(R.string.error_no_login));
-        }
-        if (!TextUtils.isEmpty(getUserId())) {
+        } else {
           builder.addHeader(LConsts.USER_TOKEN, getUserId());
+        }
+
+        Request build = builder.build();
+        //
+        return chain.proceed(build);
+      }
+    });
+    if (BuildConfig.DEBUG) {
+      // Log信息拦截器
+      HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+      loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+
+      //设置 Debug Log 模式
+      okHttpBuilder.addInterceptor(loggingInterceptor);
+    }
+    return okHttpBuilder.build();
+  }
+
+  private OkHttpClient getZSCOkHttpClient(Context context) {
+    OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+    okHttpBuilder.cache(new Cache(new File(context.getCacheDir().getAbsolutePath()), 100));
+    okHttpBuilder.addInterceptor(new Interceptor() {
+      @Override public Response intercept(Chain chain) throws IOException {
+        Request.Builder builder = chain.request().newBuilder();
+        //登录判断
+        if (!loginStatus()) {
+          if (!isLogining) throw new NotLoginException(context.getString(R.string.error_no_login));
+        } else {
+          builder.addHeader(LConsts.USER_TOKEN, getZSCUserId());
         }
         Request build = builder.build();
         //
@@ -93,6 +132,24 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
       okHttpBuilder.addInterceptor(loggingInterceptor);
     }
     return okHttpBuilder.build();
+  }
+
+  private IZSCUserRestService getAndInitZSCLoginRetrofit(OkHttpClient okHttpClient) {
+    Retrofit retrofit = new Retrofit.Builder().baseUrl(LConsts.ITSM_HSOT_ZSC)
+        .client(okHttpClient)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(PPRestConverterFactory.create(new Gson()))
+        .build();
+    return retrofit.create(IZSCUserRestService.class);
+  }
+
+  private IZSCReleaseRestService getAndInitZSCRetrofit(OkHttpClient okHttpClient) {
+    Retrofit retrofit = new Retrofit.Builder().baseUrl(LConsts.ITSM_HSOT_ZSC)
+        .client(okHttpClient)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(PPRestConverterFactory.create(new Gson()))
+        .build();
+    return retrofit.create(IZSCReleaseRestService.class);
   }
 
   private ILightningRestService getAndInitEventRetrofit(OkHttpClient okHttpClient) {
@@ -165,6 +222,58 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     return lightningRestService.eventCompile(id, status, userId, remark);
   }
 
+  //------------------------------------------发布---------------------------------------------------
+
+  @Override public Observable<PPResultBean> appDeploy(String changeNo) {
+    return lightningRestService.appDeploy(changeNo);
+  }
+
+  @Override public Observable<BAppAutoDeploy> getDeployStatus(String changeNo) {
+    return lightningRestService.getDeployStatus(changeNo);
+  }
+
+  @Override public Observable<List<BAppAutoDeploy>> getDeployAll() {
+    return lightningRestService.getDeployAll();
+  }
+
+  @Override public Observable<List<BAppAutoDeploy>> getDeployUser() {
+    return lightningRestService.getDeployUser();
+  }
+
+  @Override public Observable<BChangeCount> getDeployCount() {
+    return lightningRestService.getDeployCount();
+  }
+
+  @Override public Observable<String> getDeployFinishStatus() {
+    return lightningRestService.getDeployFinishStatus();
+  }
+
+  //------------------------------------------ZSC---------------------------------------------------
+
+  @Override public Observable<PPResultBean> appZSCDeploy(String changeNo) {
+    return zscReleaseRestService.appZSCDeploy(changeNo);
+  }
+
+  @Override public Observable<BAppAutoDeploy> getZSCDeployStatus(String changeNo) {
+    return zscReleaseRestService.getZSCDeployStatus(changeNo);
+  }
+
+  @Override public Observable<String> getZSCDeployFinishStatus() {
+    return zscReleaseRestService.getZSCDeployFinishStatus();
+  }
+
+  @Override public Observable<List<BAppAutoDeploy>> getZSCDeployAll() {
+    return zscReleaseRestService.getZSCDeployAll();
+  }
+
+  @Override public Observable<List<BAppAutoDeploy>> getZSCDeployUser() {
+    return zscReleaseRestService.getZSCDeployUser();
+  }
+
+  @Override public Observable<BChangeCount> getZSCDeployCount() {
+    return zscReleaseRestService.getZSCDeployCount();
+  }
+
   //-----------------------------------------用户网络接口---------------------------------------------
 
   @Override public Observable<String> login(BLoginUser loginUser) {
@@ -184,7 +293,25 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     return userRestService.logout();
   }
 
-  //-----------------------------------------本地接口---------------------------------------------
+  //--------------------------------------ZSC用户网络接口---------------------------------------------
+
+  @Override public Observable<String> ZSCLogin(BLoginUser loginUser) {
+    return zscLoginRetrofit.ZSCLogin(loginUser);
+  }
+
+  @Override public Observable<UserConfDto> getZSCUserInfo(String id) {
+    return zscLoginRetrofit.getZSCUserInfo(id);
+  }
+
+  @Override public Observable<List<UserConfDto>> getZSCAllUser() {
+    return zscLoginRetrofit.getZSCAllUser();
+  }
+
+  @Override public Observable<ResponseBody> ZSCLogout() {
+    return zscLoginRetrofit.ZSCLogout();
+  }
+
+  //-------------------------------------------本地接口----------------------------------------------
 
   @Override public String getUserId() {
     return sharedPreferences.getString(LConsts.USER_TOKEN, "");
@@ -196,8 +323,15 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     edit.apply();
   }
 
+  @Override public void storeUserId(String userId, String ZSCUserId) {
+    SharedPreferences.Editor edit = sharedPreferences.edit();
+    edit.putString(LConsts.USER_TOKEN, userId);
+    edit.putString(LConsts.USER_TOKEN_ZSC, ZSCUserId);
+    edit.apply();
+  }
+
   @Override public boolean loginStatus() {
-    return !TextUtils.isEmpty(sharedPreferences.getString(LConsts.USER_TOKEN, ""));
+    return !TextUtils.isEmpty(getUserId()) && !TextUtils.isEmpty(getZSCUserId());
   }
 
   @Override public String getEmail() {
@@ -208,6 +342,16 @@ public class ApiHelper implements ILightningRestService, IUserRestService, ILoca
     SharedPreferences.Editor edit = sharedPreferences.edit();
     edit.putString("email", email);
     edit.apply();
+  }
+
+  @Override public void storeZSCUserId(String userId) {
+    SharedPreferences.Editor edit = sharedPreferences.edit();
+    edit.putString(LConsts.USER_TOKEN_ZSC, userId);
+    edit.apply();
+  }
+
+  @Override public String getZSCUserId() {
+    return sharedPreferences.getString(LConsts.USER_TOKEN_ZSC, "");
   }
 
   public void setLogining(boolean isLogining) {

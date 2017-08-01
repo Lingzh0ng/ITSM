@@ -10,13 +10,14 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.wearapay.lightning.R;
-import com.wearapay.lightning.bean.IncidentDto;
+import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.List;
 
 public class ReleaseItemRecyclerViewAdapter
     extends RecyclerView.Adapter<ReleaseItemRecyclerViewAdapter.ViewHolder> {
 
-  private final List<IncidentDto> mValues;
+  private final List<BAppAutoDeploy> mValues;
   private final int positionType;
 
   public void setOnHomeItemClickListener(OnReleaseItemClickListener onHomeItemClickListener) {
@@ -25,7 +26,7 @@ public class ReleaseItemRecyclerViewAdapter
 
   private OnReleaseItemClickListener onHomeItemClickListener;
 
-  public ReleaseItemRecyclerViewAdapter(List<IncidentDto> items, int positionType,
+  public ReleaseItemRecyclerViewAdapter(List<BAppAutoDeploy> items, int positionType,
       OnReleaseItemClickListener onHomeItemClickListener) {
     mValues = items;
     this.positionType = positionType;
@@ -73,7 +74,16 @@ public class ReleaseItemRecyclerViewAdapter
       mView = view;
     }
 
-    public void bindView(final int position, final IncidentDto mItem) {
+    public void bindView(final int position, final BAppAutoDeploy mItem) {
+      tvItemNumber.setText(mItem.getChangeNo());
+      tvItemName.setText(mItem.getBusinessName());
+      tvItemPeopleName.setText(mItem.getProposer());
+      tvItemStartTime.setText(FormatUtlis.getStringFormatTime(mItem.getStartTime(), "MM/dd HH:mm"));
+      tvItemEndTime.setText(FormatUtlis.getStringFormatTime(mItem.getEndTime(), "MM/dd HH:mm"));
+      tvItemAppName.setText(mItem.getDisplayInfo().get(0).getScriptName());
+      tvItemVersion.setText(mItem.getDisplayInfo().get(0).getDeployVersion());
+      tvItemIp.setText(mItem.getDisplayInfo().get(0).getIp());
+      tvItemPurpose.setText(mItem.getPurpose());
 
       switch (positionType) {
         case 0:
@@ -119,10 +129,10 @@ public class ReleaseItemRecyclerViewAdapter
   }
 
   public interface OnReleaseItemClickListener {
-    void onItemClick(int position, IncidentDto item);
+    void onItemClick(int position, BAppAutoDeploy item);
 
-    void onReleaseButtonClick(int position, IncidentDto item);
+    void onReleaseButtonClick(int position, BAppAutoDeploy item);
 
-    void onCheckButtonClick(int position, IncidentDto item);
+    void onCheckButtonClick(int position, BAppAutoDeploy item);
   }
 }

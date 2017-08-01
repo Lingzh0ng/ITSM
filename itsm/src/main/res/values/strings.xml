@@ -92,4 +92,10 @@
   <string name="title_set_start_date">开始时间</string>
   <string name="title_set_end_date">结束时间</string>
 
+
+  <string name="text_number_1">Ⅰ</string>
+  <string name="text_number_2">Ⅱ</string>
+  <string name="text_number_3">Ⅲ</string>
+  <string name="text_number_4">Ⅳ</string>
+
 </resources>

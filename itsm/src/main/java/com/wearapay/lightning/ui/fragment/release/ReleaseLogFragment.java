@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.ReleaseLogRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.bean.BAppAutoDeploy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,14 @@ public class ReleaseLogFragment extends BaseFragment {
   @BindView(R.id.list) RecyclerView recyclerView;
   private ReleaseLogRecyclerViewAdapter releaseLogRecyclerViewAdapter;
 
-  public static ReleaseLogFragment newInstance() {
+  private BAppAutoDeploy appAutoDeploy;
+  private LConsts.ReleaseEnvironment environment;
+
+  public static ReleaseLogFragment newInstance(BAppAutoDeploy appAutoDeploy,
+      LConsts.ReleaseEnvironment environment) {
     ReleaseLogFragment fragment = new ReleaseLogFragment();
+    fragment.appAutoDeploy = appAutoDeploy;
+    fragment.environment = environment;
     return fragment;
   }
 

@@ -38,6 +38,8 @@ import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.uitls.Endecrypt;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
+import io.reactivex.Observable;
+import io.reactivex.functions.BiFunction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,31 +210,65 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     BLoginUser loginUser = new BLoginUser();
     loginUser.setUsername(email);
     loginUser.setPassword(reValue);
-    wrap(ApiHelper.getInstance().login(loginUser)).subscribe(
-        new BaseObserver<String>(LoginActivity.this) {
-          @Override public void onNext(@io.reactivex.annotations.NonNull String id) {
-            super.onNext(id);
-            showProgress(false);
-            isLogining = false;
-            if (!TextUtils.isEmpty(id)) {
-              ApiHelper.getInstance().storeUserId(id);
+    wrap(Observable.zip(ApiHelper.getInstance().login(loginUser),
+        ApiHelper.getInstance().ZSCLogin(loginUser), new BiFunction<String, String, Boolean>() {
+          @Override public Boolean apply(@io.reactivex.annotations.NonNull String userToken,
+              @io.reactivex.annotations.NonNull String ZSCUserToken) throws Exception {
+            if (!TextUtils.isEmpty(userToken) && !TextUtils.isEmpty(ZSCUserToken)) {
+              ApiHelper.getInstance().storeUserId(userToken, ZSCUserToken);
+              //ApiHelper.getInstance().storeZSCUserId(ZSCUserToken);
               ApiHelper.getInstance().storeEmail(email);
-              RxBus.getInstance().send(new UpdateEvent(true, true));
-              finish();
+              return true;
             } else {
               mPasswordView.setError(getString(R.string.error_incorrect_password));
               mPasswordView.requestFocus();
-              ApiHelper.getInstance().setLogining(false);
+              return false;
             }
           }
+        })).subscribe(new BaseObserver<Boolean>(LoginActivity.this) {
+      @Override public void onNext(@io.reactivex.annotations.NonNull Boolean aBoolean) {
+        super.onNext(aBoolean);
+        showProgress(false);
+        isLogining = false;
+        ApiHelper.getInstance().setLogining(false);
+        if (aBoolean) {
+          RxBus.getInstance().send(new UpdateEvent(true, true));
+          finish();
+        }
+      }
 
-          @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-            super.onError(e);
-            showProgress(false);
-            isLogining = false;
-            ApiHelper.getInstance().setLogining(false);
-          }
-        });
+      @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+        super.onError(e);
+        showProgress(false);
+        isLogining = false;
+        ApiHelper.getInstance().setLogining(false);
+      }
+    });
+    //wrap(ApiHelper.getInstance().login(loginUser)).subscribe(
+    //    new BaseObserver<String>(LoginActivity.this) {
+    //      @Override public void onNext(@io.reactivex.annotations.NonNull String id) {
+    //        super.onNext(id);
+    //        showProgress(false);
+    //        isLogining = false;
+    //        if (!TextUtils.isEmpty(id)) {
+    //          ApiHelper.getInstance().storeUserId(id);
+    //          ApiHelper.getInstance().storeEmail(email);
+    //          RxBus.getInstance().send(new UpdateEvent(true, true));
+    //          finish();
+    //        } else {
+    //          mPasswordView.setError(getString(R.string.error_incorrect_password));
+    //          mPasswordView.requestFocus();
+    //          ApiHelper.getInstance().setLogining(false);
+    //        }
+    //      }
+    //
+    //      @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+    //        super.onError(e);
+    //        showProgress(false);
+    //        isLogining = false;
+    //        ApiHelper.getInstance().setLogining(false);
+    //      }
+    //    });
   }
 
   @Override public void onBackPressed() {
