@@ -20,6 +20,15 @@ public class BAppAutoDeploy implements Serializable{
   private List<BAutoDeployInfo> displayInfo;
   private List<BAutoDeploy> detaillog;
   private String deployLog;
+  private BReleaseStatus status;
+
+  public BReleaseStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(BReleaseStatus status) {
+    this.status = status;
+  }
 
   @Override public String toString() {
     return "BAppAutoDeploy{" +

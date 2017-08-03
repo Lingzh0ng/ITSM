@@ -268,8 +268,8 @@ public class HomeActivity extends BaseActivity
               throws Exception {
             bIncidentCount.setUserChangeMgmt(bChangeCount.getUserChangeMgmt());
             bIncidentCount.setAllChangeMgmt(bChangeCount.getAllChangeMgmt());
-            bIncidentCount.setUserZSCChangeMgmt(bChangeCount.getUserChangeMgmt());
-            bIncidentCount.setAllZSCChangeMgmt(bChangeCount.getAllChangeMgmt());
+            bIncidentCount.setUserZSCChangeMgmt(bChangeCount2.getUserChangeMgmt());
+            bIncidentCount.setAllZSCChangeMgmt(bChangeCount2.getAllChangeMgmt());
             return bIncidentCount;
           }
         })).subscribe(new BaseObserver<BIncidentCount>(HomeActivity.this) {

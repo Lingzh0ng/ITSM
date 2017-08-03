@@ -1,5 +1,7 @@
 package com.wearapay.lightning.adapter;
 
+import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.bean.BAppAutoDeploy;
+import com.wearapay.lightning.bean.BAutoDeployInfo;
+import com.wearapay.lightning.uitls.AppUtils;
 import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.List;
 
@@ -19,6 +23,7 @@ public class ReleaseItemRecyclerViewAdapter
 
   private final List<BAppAutoDeploy> mValues;
   private final int positionType;
+  private Context context;
 
   public void setOnHomeItemClickListener(OnReleaseItemClickListener onHomeItemClickListener) {
     this.onHomeItemClickListener = onHomeItemClickListener;
@@ -26,8 +31,9 @@ public class ReleaseItemRecyclerViewAdapter
 
   private OnReleaseItemClickListener onHomeItemClickListener;
 
-  public ReleaseItemRecyclerViewAdapter(List<BAppAutoDeploy> items, int positionType,
-      OnReleaseItemClickListener onHomeItemClickListener) {
+  public ReleaseItemRecyclerViewAdapter(Context context, List<BAppAutoDeploy> items,
+      int positionType, OnReleaseItemClickListener onHomeItemClickListener) {
+    this.context = context;
     mValues = items;
     this.positionType = positionType;
     this.onHomeItemClickListener = onHomeItemClickListener;
@@ -58,15 +64,12 @@ public class ReleaseItemRecyclerViewAdapter
     @BindView(R.id.tvItemStartTime) TextView tvItemStartTime;
     @BindView(R.id.tvItemEndTime) TextView tvItemEndTime;
     @BindView(R.id.llContent) LinearLayout llContent;
-    @BindView(R.id.tvItemAppName) TextView tvItemAppName;
-    @BindView(R.id.tvItemVersion) TextView tvItemVersion;
-    @BindView(R.id.tvItemIp) TextView tvItemIp;
-    @BindView(R.id.tvItemServer) LinearLayout tvItemServer;
     @BindView(R.id.tvItemPurpose) TextView tvItemPurpose;
     @BindView(R.id.viewLine) View viewLine;
     @BindView(R.id.bntRelease) Button bntRelease;
     @BindView(R.id.bntCheck) Button bntCheck;
     @BindView(R.id.llBtns) LinearLayout llBtns;
+    @BindView(R.id.rvApp) RecyclerView rvApp;
 
     public ViewHolder(View view) {
       super(view);
@@ -80,10 +83,18 @@ public class ReleaseItemRecyclerViewAdapter
       tvItemPeopleName.setText(mItem.getProposer());
       tvItemStartTime.setText(FormatUtlis.getStringFormatTime(mItem.getStartTime(), "MM/dd HH:mm"));
       tvItemEndTime.setText(FormatUtlis.getStringFormatTime(mItem.getEndTime(), "MM/dd HH:mm"));
-      tvItemAppName.setText(mItem.getDisplayInfo().get(0).getScriptName());
-      tvItemVersion.setText(mItem.getDisplayInfo().get(0).getDeployVersion());
-      tvItemIp.setText(mItem.getDisplayInfo().get(0).getIp());
+      //tvItemAppName.setText(mItem.getDisplayInfo().get(0).getScriptName());
+      //tvItemVersion.setText(mItem.getDisplayInfo().get(0).getDeployVersion());
+      //tvItemIp.setText(mItem.getDisplayInfo().get(0).getIp());
       tvItemPurpose.setText(mItem.getPurpose());
+
+      List<BAutoDeployInfo> displayInfo = mItem.getDisplayInfo();
+
+      ViewGroup.LayoutParams layoutParams = rvApp.getLayoutParams();
+      layoutParams.height = displayInfo.size() * AppUtils.dip2px(context, 28f);
+      rvApp.setLayoutParams(layoutParams);
+      rvApp.setLayoutManager(new LinearLayoutManager(context));
+      rvApp.setAdapter(new ReleaseAppItem1RecyclerViewAdapter(context, displayInfo));
 
       switch (positionType) {
         case 0:

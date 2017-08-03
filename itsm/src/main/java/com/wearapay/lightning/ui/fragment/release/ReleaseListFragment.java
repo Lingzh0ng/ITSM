@@ -14,7 +14,6 @@ import com.wearapay.lightning.bean.BAppAutoDeploy;
 import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.ReleaseDetailsActivity;
-import com.wearapay.lightning.uitls.ToastUtils;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
@@ -62,14 +61,14 @@ public class ReleaseListFragment extends BaseListFragment {
     incidentDtos = new ArrayList<>();
     Context context = getContext();
     recyclerView.setLayoutManager(new LinearLayoutManager(context));
-    releaseItemRecyclerViewAdapter = new ReleaseItemRecyclerViewAdapter(incidentDtos, position,
+    releaseItemRecyclerViewAdapter = new ReleaseItemRecyclerViewAdapter(getActivity(),incidentDtos, position,
         new ReleaseItemRecyclerViewAdapter.OnReleaseItemClickListener() {
           @Override public void onItemClick(int position, BAppAutoDeploy item) {
 
           }
 
           @Override public void onReleaseButtonClick(int position, BAppAutoDeploy item) {
-            ToastUtils.showLongSafe("onReleaseButtonClick");
+            //ToastUtils.showLongSafe("onReleaseButtonClick");
             Intent intent = new Intent(getActivity(), ReleaseDetailsActivity.class);
             intent.putExtra("BAppAutoDeploy", item);
             intent.putExtra("environment", environment);

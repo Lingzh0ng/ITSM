@@ -55,6 +55,14 @@ public class App extends Application {
       }
     });
     TwinklingRefreshLayout.setDefaultHeader(SinaRefreshView.class.getName());
+
+    //final Thread.UncaughtExceptionHandler defaultExceptionHandler =
+    //    Thread.getDefaultUncaughtExceptionHandler();
+    //Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+    //  @Override public void uncaughtException(Thread thread, Throwable throwable) {
+    //    defaultExceptionHandler.uncaughtException(thread, throwable);
+    //  }
+    //});
   }
 
   public List<Activity> getActivityList() {

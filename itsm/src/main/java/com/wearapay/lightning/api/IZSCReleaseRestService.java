@@ -2,7 +2,6 @@ package com.wearapay.lightning.api;
 
 import com.wearapay.lightning.bean.BAppAutoDeploy;
 import com.wearapay.lightning.bean.BChangeCount;
-import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.util.List;
 import retrofit2.http.GET;
@@ -14,13 +13,13 @@ import retrofit2.http.Path;
  */
 public interface IZSCReleaseRestService {
 
-  @POST("app/deploy/{changeNo}") Observable<PPResultBean> appZSCDeploy(
+  @POST("app/deploy/{changeNo}") Observable<String> appZSCDeploy(
       @Path("changeNo") String changeNo);
 
   @GET("app/deploy/status/{changeNo}") Observable<BAppAutoDeploy> getZSCDeployStatus(
       @Path("changeNo") String changeNo);
 
-  @GET("app/deploy/finish/{changeNo}") Observable<String> getZSCDeployFinishStatus();
+  @GET("app/deploy/finish/{changeNo}") Observable<String> getZSCDeployFinishStatus(@Path("changeNo") String changeNo);
 
   @GET("app/deploy/all") Observable<List<BAppAutoDeploy>> getZSCDeployAll();
 

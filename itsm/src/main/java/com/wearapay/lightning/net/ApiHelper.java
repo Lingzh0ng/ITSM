@@ -22,7 +22,6 @@ import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.exception.NotLoginException;
 import com.wearapay.lightning.net.converter.PPRestConverterFactory;
-import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.io.File;
 import java.io.IOException;
@@ -224,7 +223,7 @@ public class ApiHelper
 
   //------------------------------------------发布---------------------------------------------------
 
-  @Override public Observable<PPResultBean> appDeploy(String changeNo) {
+  @Override public Observable<String> appDeploy(String changeNo) {
     return lightningRestService.appDeploy(changeNo);
   }
 
@@ -244,13 +243,13 @@ public class ApiHelper
     return lightningRestService.getDeployCount();
   }
 
-  @Override public Observable<String> getDeployFinishStatus() {
-    return lightningRestService.getDeployFinishStatus();
+  @Override public Observable<String> getDeployFinishStatus(String changeNo) {
+    return lightningRestService.getDeployFinishStatus(changeNo);
   }
 
   //------------------------------------------ZSC---------------------------------------------------
 
-  @Override public Observable<PPResultBean> appZSCDeploy(String changeNo) {
+  @Override public Observable<String> appZSCDeploy(String changeNo) {
     return zscReleaseRestService.appZSCDeploy(changeNo);
   }
 
@@ -258,8 +257,8 @@ public class ApiHelper
     return zscReleaseRestService.getZSCDeployStatus(changeNo);
   }
 
-  @Override public Observable<String> getZSCDeployFinishStatus() {
-    return zscReleaseRestService.getZSCDeployFinishStatus();
+  @Override public Observable<String> getZSCDeployFinishStatus(String changeNo) {
+    return zscReleaseRestService.getZSCDeployFinishStatus(changeNo);
   }
 
   @Override public Observable<List<BAppAutoDeploy>> getZSCDeployAll() {

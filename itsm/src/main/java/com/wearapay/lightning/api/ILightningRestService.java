@@ -7,7 +7,6 @@ import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
 import com.wearapay.lightning.bean.BIncidentTime;
 import com.wearapay.lightning.bean.IncidentDto;
-import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -50,7 +49,7 @@ public interface ILightningRestService {
       @Path("id") String id, @Path("status") int status, @Path("userId") String userId,
       @Body BIncidentRemark remark);
 
-  @POST("app/deploy/{changeNo}") Observable<PPResultBean> appDeploy(
+  @POST("app/deploy/{changeNo}") Observable<String> appDeploy(
       @Path("changeNo") String changeNo);
 
   @GET("app/deploy/status/{changeNo}") Observable<BAppAutoDeploy> getDeployStatus(
@@ -62,5 +61,6 @@ public interface ILightningRestService {
 
   @GET("app/deploy/count") Observable<BChangeCount> getDeployCount();
 
-  @GET("app/deploy/finish/{changeNo}") Observable<String> getDeployFinishStatus();
+  @GET("app/deploy/finish/{changeNo}") Observable<String> getDeployFinishStatus(
+      @Path("changeNo")  String changeNo);
 }

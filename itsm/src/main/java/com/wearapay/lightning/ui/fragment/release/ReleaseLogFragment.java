@@ -15,6 +15,7 @@ import com.wearapay.lightning.adapter.ReleaseLogRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseFragment;
 import com.wearapay.lightning.bean.BAppAutoDeploy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class ReleaseLogFragment extends BaseFragment {
 
   private BAppAutoDeploy appAutoDeploy;
   private LConsts.ReleaseEnvironment environment;
+  private List<String> logList;
 
   public static ReleaseLogFragment newInstance(BAppAutoDeploy appAutoDeploy,
       LConsts.ReleaseEnvironment environment) {
@@ -50,13 +52,24 @@ public class ReleaseLogFragment extends BaseFragment {
   }
 
   private void initView() {
-    List<String> logList = new ArrayList<>();
-    for (int i = 0; i < 100; i++) {
-      logList.add("测试日志 " + i);
-    }
+    logList = new ArrayList<>();
+
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     releaseLogRecyclerViewAdapter = new ReleaseLogRecyclerViewAdapter(logList);
     recyclerView.setAdapter(releaseLogRecyclerViewAdapter);
+    recyclerView.smoothScrollToPosition(logList.size());
+  }
+
+  public void upDateLog(String logs) {
+    String[] split = logs.split("</br>");
+    List<String> stringList = Arrays.asList(split);
+    logList.clear();
+    logList.add("发布日志");
+    logList.addAll(stringList);
+    //for (int i = a; i < a + 10; i++) {
+    //  logList.add("测试日志 " + i);
+    //}
+    releaseLogRecyclerViewAdapter.notifyDataSetChanged();
     recyclerView.smoothScrollToPosition(logList.size());
   }
 

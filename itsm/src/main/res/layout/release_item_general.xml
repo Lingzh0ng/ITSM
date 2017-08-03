@@ -66,9 +66,9 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp"
         android:padding="5dp"
-        android:visibility="gone"
         android:text="07-12 09:58"
         android:textSize="12dp"
+        android:visibility="gone"
         />
 
     <LinearLayout
@@ -85,9 +85,9 @@
           android:id="@+id/tvItemStartTime"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="8/15 22:00"
           android:background="@drawable/text_bg"
           android:padding="3dp"
+          android:text="8/15 22:00"
           android:textColor="@color/black"
           android:textSize="12dp"
           />
@@ -104,65 +104,27 @@
           android:id="@+id/tvItemEndTime"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="8/16 22:00"
           android:background="@drawable/text_bg"
           android:padding="3dp"
+          android:text="8/16 22:00"
           android:textColor="@color/black"
           android:textSize="12dp"
           />
 
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/tvItemServer"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llContent"
-        android:layout_margin="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        >
-      <TextView
-          android:id="@+id/tvItemAppName"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:maxLines="1"
-          android:text="wopay"
-          android:textColor="@color/black"
-          android:textSize="14sp"
-          />
-      <TextView
-          android:id="@+id/tvItemVersion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="30dp"
-          android:layout_marginStart="30dp"
-          android:maxLines="1"
-          android:text="版本号"
-          android:textColor="@color/black"
-          android:textSize="14sp"
-          />
-      <TextView
-          android:id="@+id/tvItemIp"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="10.111.20.11"
-          android:ellipsize="end"
-          android:maxLines="2"
-          android:textColor="@color/black"
-          android:textSize="14sp"
-          />
-
-    </LinearLayout>
+        />
 
     <TextView
         android:id="@+id/tvItemPurpose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvItemServer"
+        android:layout_below="@+id/rvApp"
         android:layout_margin="5dp"
         android:gravity="center_vertical"
         android:paddingEnd="5dp"
@@ -195,7 +157,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:background="@drawable/item_selector"
-          android:text="@string/action_yes"
+          android:text="发布"
           android:textStyle="bold"
           />
 
@@ -213,7 +175,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:background="@drawable/item_selector"
-          android:text="@string/item_close"
+          android:text="发布物检查"
           android:textStyle="bold"
           />
     </LinearLayout>

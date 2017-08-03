@@ -16,12 +16,14 @@
       android:background="@color/colorPrimary"
       >
     <ImageView
+        android:id="@+id/ivBack"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/back_arrow_white"
         />
     <com.wearapay.lightning.weight.VerticalTextView
+        android:id="@+id/vtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -51,7 +53,8 @@
       android:layout_height="match_parent"
       android:orientation="vertical"
       >
-    <Button
+    <ImageButton
+        android:id="@+id/btnRelease"
         android:layout_width="44dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
@@ -60,29 +63,38 @@
         android:layout_marginEnd="2dp"
         android:layout_weight="1"
         android:background="@drawable/item_selector"
+        android:src="@drawable/stop"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
         android:text="发布"
         />
-    <Button
+    <!--<Button-->
+        <!--android:id="@+id/btnStop"-->
+        <!--android:layout_width="44dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginStart="2dp"-->
+        <!--android:layout_marginEnd="2dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/item_selector"-->
+        <!--android:text="暂停"-->
+        <!--/>-->
+    <ImageButton
+        android:id="@+id/btnSingleRelease"
         android:layout_width="44dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_weight="1"
+        android:padding="5dp"
         android:background="@drawable/item_selector"
-        android:text="暂停"
-        />
-    <Button
-        android:layout_width="44dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_weight="1"
-        android:background="@drawable/item_selector"
+        android:src="@drawable/step_forward"
+        android:scaleType="fitCenter"
         android:text="单步发布"
         />
-    <Button
+    <ImageButton
+        android:id="@+id/btnVerify"
         android:layout_width="44dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
@@ -90,6 +102,9 @@
         android:layout_marginEnd="2dp"
         android:layout_weight="1"
         android:background="@drawable/item_selector"
+        android:src="@drawable/success_check"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
         android:text="验证完成"
         />
   </LinearLayout>
