@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     toolbar.setTitle(getString(R.string.action_sign_in));
     setSupportActionBar(toolbar);
     //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    //mDelegate.setSwipeBackEnable();
     mPasswordView = (EditText) findViewById(R.id.password);
     mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
       @Override public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {

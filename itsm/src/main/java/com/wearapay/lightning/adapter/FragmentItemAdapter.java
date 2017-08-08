@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.wearapay.lightning.App;
 import com.wearapay.lightning.R;
-import com.wearapay.lightning.ui.fragment.ItemFragment;
+import com.wearapay.lightning.ui.fragment.event.ItemFragment;
 import java.util.List;
 
 /**

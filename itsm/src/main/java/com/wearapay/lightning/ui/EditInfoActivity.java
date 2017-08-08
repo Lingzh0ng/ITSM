@@ -3,7 +3,6 @@ package com.wearapay.lightning.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.StatusBarCompat;
-import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.base.BaseSwipeBackActivity;
 import com.wearapay.lightning.bean.BIncidentRemark;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.net.ApiHelper;
@@ -25,7 +24,7 @@ import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
 import io.reactivex.annotations.NonNull;
 
-public class EditInfoActivity extends BaseActivity {
+public class EditInfoActivity extends BaseSwipeBackActivity {
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.pbClaim) ProgressBar pbClaim;
@@ -64,15 +63,6 @@ public class EditInfoActivity extends BaseActivity {
     //Serializable serializableExtra = intent.getSerializableExtra("");
   }
 
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        finish();
-        break;
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
   private void updateEvenStatus(int status, BIncidentRemark note) {
     showProgress();
     wrap(ApiHelper.getInstance().updateEventStatus(incidentDto.getId(), status, note)).subscribe(
@@ -103,5 +93,4 @@ public class EditInfoActivity extends BaseActivity {
     remark.setRemark(trim);
     updateEvenStatus(currentType, remark);
   }
-
 }

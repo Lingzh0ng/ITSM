@@ -1,6 +1,8 @@
 package com.wearapay.lightning.uitls;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import java.util.Calendar;
@@ -23,6 +25,7 @@ public class AppUtils {
     }
     return false;
   }
+
   /**
    * Get 00:00:00 time of the give date.
    *
@@ -60,4 +63,7 @@ public class AppUtils {
     return (int) (pxValue / scale + 0.5f);
   }
 
+  public static void startActvity(Activity activity, Intent intent) {
+
+  }
 }

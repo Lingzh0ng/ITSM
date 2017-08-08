@@ -6,6 +6,7 @@
     >
 
   <TextView
+      android:id="@+id/tvVersion"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@+id/iv_icon"
@@ -33,5 +34,14 @@
       android:layout_centerHorizontal="true"
       />
 
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/tvVersion"
+      android:gravity="center"
+      android:textColor="@color/black"
+      android:layout_marginTop="30dp"
+      android:text="作者：张洁儒，关福旺，党怡勃，凌一中，R.F"
+      />
 
 </RelativeLayout>

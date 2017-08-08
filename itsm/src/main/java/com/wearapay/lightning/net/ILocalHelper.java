@@ -21,4 +21,6 @@ public interface ILocalHelper {
   String getZSCUserId();
 
   void storeUserId(String userId, String ZSCUserId);
+
+  void localLogout();
 }

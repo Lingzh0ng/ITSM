@@ -21,11 +21,13 @@ import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.net.ApiHelper;
 import com.wearapay.lightning.net.BaseObserver;
-import com.wearapay.lightning.ui.fragment.BlankFragment;
-import com.wearapay.lightning.ui.fragment.MemberFragment;
 import com.wearapay.lightning.ui.fragment.SettingFragment;
+import com.wearapay.lightning.ui.fragment.event.BlankFragment;
+import com.wearapay.lightning.ui.fragment.event.MemberFragment;
+import com.wearapay.lightning.ui.fragment.login.UserInfoFragment;
 import com.wearapay.lightning.ui.fragment.release.ReleaseFragment;
 import com.wearapay.lightning.ui.fragment.statistical.StatisticalFragment;
+import com.wearapay.lightning.uitls.ActivityUtils;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
@@ -86,23 +88,17 @@ public class HomeActivity extends BaseActivity
 
     headerView = navigationView.getHeaderView(0);
     if (headerView != null) {
-      //headerView.setOnClickListener(new View.OnClickListener() {
-      //  @Override public void onClick(View v) {
-      //    ApiHelper.getInstance()
-      //        .getTimeList()
-      //        .subscribeOn(Schedulers.io())
-      //        .observeOn(AndroidSchedulers.mainThread())
-      //        .subscribe(new Consumer<ResponseBody>() {
-      //          @Override public void accept(@NonNull ResponseBody responseBody) throws Exception {
-      //            System.out.println(responseBody);
-      //          }
-      //        }, new Consumer<Throwable>() {
-      //          @Override public void accept(@NonNull Throwable throwable) throws Exception {
-      //            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-      //          }
-      //        });
-      //  }
-      //});
+      headerView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (ApiHelper.getInstance().loginStatus()) {
+            Bundle bundle = new Bundle();
+            bundle.putString(UserInfoFragment.User_Name,
+                ApiHelper.getInstance().getEmail() + "@" + getString(R.string.title_email_suffix));
+            bundle.putString("title", getString(R.string.toolbar_user_info));
+            ActivityUtils.startFragment(HomeActivity.this, LConsts.FragmentType.UserInfo, bundle);
+          }
+        }
+      });
       tvCompany = (TextView) headerView.findViewById(R.id.tvCompany);
       tvEmail = (TextView) headerView.findViewById(R.id.tvEmail);
       ivHeader = (ImageView) headerView.findViewById(R.id.imageView);
@@ -125,11 +121,13 @@ public class HomeActivity extends BaseActivity
           @Override public void accept(@NonNull UpdateEvent o) throws Exception {
             System.out.println(o);
             showFragment = true;
-            getUserEvent();
+            if (o.isUpdate()) {
+              getUserEvent();
+            }
             if (o.isLogin()) {
               String email = ApiHelper.getInstance().getEmail();
               tvEmail.setText(email + "@" + getString(R.string.title_email_suffix));
-              headerView.setOnClickListener(null);
+              //headerView.setOnClickListener(null);
             }
           }
         });
@@ -139,7 +137,7 @@ public class HomeActivity extends BaseActivity
     super.onStart();
     String email = ApiHelper.getInstance().getEmail();
     tvEmail.setText(email + "@" + getString(R.string.title_email_suffix));
-    headerView.setOnClickListener(null);
+    //headerView.setOnClickListener(null);
     //if (ApiHelper.getInstance().loginStatus()) {
     //
     //} else {

@@ -11,21 +11,22 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.wearapay.lightning.base.BaseActivity;
 import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.base.BaseSwipeBackActivity;
 import com.wearapay.lightning.uitls.ActivityUtils;
 import java.io.Serializable;
 
 /**
  * Created by lyz on 2017/7/27.
  */
-public class CommonActivity extends BaseActivity {
+public class CommonActivity extends BaseSwipeBackActivity {
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.contentFrame) FrameLayout contentFrame;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_common);
+    StatusBarCompat.compat(this, 0x20000000);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
     boolean booleanExtra = getIntent().getBooleanExtra(LConsts.CAN_BACK, true);

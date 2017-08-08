@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.wearapay.lightning.ui.fragment.MemberFragment"
+        tools:context=".ui.fragment.event.MemberFragment"
         tools:listitem="@layout/fragment_member"
         />
   </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>

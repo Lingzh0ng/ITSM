@@ -191,8 +191,6 @@ public class ReleaseDetailsActivity extends BaseActivity {
       @Override public void onNext(@NonNull String ppResultBean) {
         super.onNext(ppResultBean);
         hideProgress();
-        //btnRelease.setEnabled(false);
-        //btnVerify.setEnabled(true);
         startUpdateReleaseInfo();
         ongoing = true;
       }
@@ -202,22 +200,6 @@ public class ReleaseDetailsActivity extends BaseActivity {
         hideProgress();
       }
     });
-    //wrap(ApiHelper.getInstance().getEventCount()).subscribe(
-    //    new BaseObserver<BIncidentCount>(ReleaseDetailsActivity.this) {
-    //      @Override public void onNext(@NonNull BIncidentCount bIncidentCount) {
-    //        super.onNext(bIncidentCount);
-    //        hideProgress();
-    //        //btnRelease.setEnabled(false);
-    //        btnVerify.setEnabled(true);
-    //        startUpdateReleaseInfo();
-    //        ongoing = true;
-    //      }
-    //
-    //      @Override public void onError(@NonNull Throwable e) {
-    //        super.onError(e);
-    //        hideProgress();
-    //      }
-    //    });
   }
 
   private Disposable disposable;

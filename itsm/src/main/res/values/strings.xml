@@ -52,6 +52,7 @@
 
   <string name="toolbar_alarm_details_title">报警详情</string>
   <string name="toolbar_select_member">分配联系人</string>
+  <string name="toolbar_user_info">登录详情</string>
 
 
   <string name="item_alarm_name">名称:%s</string>
@@ -91,6 +92,8 @@
 
   <string name="title_set_start_date">开始时间</string>
   <string name="title_set_end_date">结束时间</string>
+
+  <string name="btn_logout">退出登录</string>
 
 
   <string name="text_number_1">Ⅰ</string>

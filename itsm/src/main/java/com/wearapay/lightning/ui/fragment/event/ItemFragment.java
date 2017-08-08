@@ -1,4 +1,4 @@
-package com.wearapay.lightning.ui.fragment;
+package com.wearapay.lightning.ui.fragment.event;
 
 import android.content.Context;
 import android.content.Intent;

@@ -81,4 +81,7 @@ dependencies {
   compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
   compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
   compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+
+  compile 'me.yokeyword:fragmentation:1.1.1'
+  compile 'me.yokeyword:fragmentation-swipeback:1.1.1'
 }

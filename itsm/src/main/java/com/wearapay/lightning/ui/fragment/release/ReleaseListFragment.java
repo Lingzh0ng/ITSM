@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Window;
+import android.view.WindowManager;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.wearapay.lightning.LConsts;
@@ -58,6 +60,9 @@ public class ReleaseListFragment extends BaseListFragment {
   }
 
   @Override protected void initView() {
+    WindowManager windowManager = getActivity().getWindowManager();
+    Window window = getActivity().getWindow();
+    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     incidentDtos = new ArrayList<>();
     Context context = getContext();
     recyclerView.setLayoutManager(new LinearLayoutManager(context));

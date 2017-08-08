@@ -22,6 +22,7 @@ import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.exception.NotLoginException;
 import com.wearapay.lightning.net.converter.PPRestConverterFactory;
+import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.io.File;
 import java.io.IOException;
@@ -288,7 +289,7 @@ public class ApiHelper
     return userRestService.getAllUser();
   }
 
-  @Override public Observable<ResponseBody> logout() {
+  @Override public Observable<PPResultBean> logout() {
     return userRestService.logout();
   }
 
@@ -306,7 +307,7 @@ public class ApiHelper
     return zscLoginRetrofit.getZSCAllUser();
   }
 
-  @Override public Observable<ResponseBody> ZSCLogout() {
+  @Override public Observable<PPResultBean> ZSCLogout() {
     return zscLoginRetrofit.ZSCLogout();
   }
 
@@ -327,6 +328,11 @@ public class ApiHelper
     edit.putString(LConsts.USER_TOKEN, userId);
     edit.putString(LConsts.USER_TOKEN_ZSC, ZSCUserId);
     edit.apply();
+  }
+
+  @Override public void localLogout() {
+    storeEmail("");
+    storeUserId("","");
   }
 
   @Override public boolean loginStatus() {

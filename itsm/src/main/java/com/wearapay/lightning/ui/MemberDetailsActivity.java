@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.StatusBarCompat;
-import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.base.BaseSwipeBackActivity;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.uitls.AppUtils;
 import com.wearapay.lightning.uitls.ToastUtils;
@@ -34,7 +33,7 @@ import com.wearapay.lightning.uitls.ToastUtils;
 import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class MemberDetailsActivity extends BaseActivity {
+public class MemberDetailsActivity extends BaseSwipeBackActivity {
 
   private static final int REQUEST_CALL_PHONE = 1000;
   @BindView(R.id.tvPhoneNumber) TextView tvPhoneNumber;
@@ -90,15 +89,6 @@ public class MemberDetailsActivity extends BaseActivity {
         tvWechat.setText(weChat);
       }
     }
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        finish();
-        break;
-    }
-    return super.onOptionsItemSelected(item);
   }
 
   @OnClick({ R.id.ivMessage, R.id.ivCall, R.id.ivEml, R.id.ivWeChat })

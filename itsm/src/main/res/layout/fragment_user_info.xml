@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wearapay.lightning.ui.fragment.login.UserInfoFragment"
+    >
+
+  <!-- TODO: Update blank fragment layout -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginEnd="10dp"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="用户名:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center|end"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginEnd="10dp"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="公司:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/tvCompany"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center|end"
+        android:text="@string/title_company"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+
+  </LinearLayout>
+
+  <Button
+      android:id="@+id/btn_logout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+      android:background="@drawable/button_selector"
+      android:text="@string/btn_logout"
+      android:textSize="20sp"
+      android:textColor="@color/white"
+      />
+
+</LinearLayout>

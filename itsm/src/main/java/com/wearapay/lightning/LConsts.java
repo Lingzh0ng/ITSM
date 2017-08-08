@@ -1,6 +1,7 @@
 package com.wearapay.lightning;
 
-import com.wearapay.lightning.ui.fragment.MemberFragment;
+import com.wearapay.lightning.ui.fragment.event.MemberFragment;
+import com.wearapay.lightning.ui.fragment.login.UserInfoFragment;
 
 /**
  * Created by lyz on 2017/7/13.
@@ -12,7 +13,8 @@ public class LConsts {
   public static String CAN_BACK = "can_back";
 
   public enum FragmentType {
-    Member(MemberFragment.class);
+    Member(MemberFragment.class),
+    UserInfo(UserInfoFragment.class);
 
     private Class clazz;
 

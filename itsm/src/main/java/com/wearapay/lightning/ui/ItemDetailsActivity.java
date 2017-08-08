@@ -8,21 +8,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.wearapay.lightning.R;
+import com.wearapay.lightning.StatusBarCompat;
 import com.wearapay.lightning.adapter.NoteRecyclerViewAdapter;
-import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.base.BaseSwipeBackActivity;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDetailsActivity extends BaseActivity {
+public class ItemDetailsActivity extends BaseSwipeBackActivity {
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.app_bar) AppBarLayout appBar;
@@ -46,7 +46,7 @@ public class ItemDetailsActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_item_details);
-    //StatusBarCompat.compat(this, 0x20000000);
+    StatusBarCompat.compat(this, 0x20000000);
     ButterKnife.bind(this);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -101,9 +101,6 @@ public class ItemDetailsActivity extends BaseActivity {
         recyclerView.setNestedScrollingEnabled(false);
         List<String> list = new ArrayList<>();
         list.add(remark);
-        //for (int i = 0; i < 3; i++) {
-        //  list.add("sfafahkj按计划分开就爱好是否看见啊好烦客家话   \n" + i);
-        //}
         NoteRecyclerViewAdapter adapter = new NoteRecyclerViewAdapter(list);
 
         recyclerView.addItemDecoration(
@@ -111,15 +108,5 @@ public class ItemDetailsActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
       }
     }
-  }
-
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        finish();
-        break;
-    }
-    return super.onOptionsItemSelected(item);
   }
 }
