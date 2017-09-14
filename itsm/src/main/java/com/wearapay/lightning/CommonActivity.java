@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.wearapay.lightning.base.BaseFragment;
 import com.wearapay.lightning.base.BaseSwipeBackActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.uitls.ActivityUtils;
 import java.io.Serializable;
 
@@ -40,6 +41,10 @@ public class CommonActivity extends BaseSwipeBackActivity {
     }
 
     showFragment();
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {

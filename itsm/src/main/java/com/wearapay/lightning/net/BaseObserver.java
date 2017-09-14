@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
+import com.wearapay.lightning.base.mvp.IBaseView;
 import com.wearapay.lightning.exception.NotLoginException;
 import com.wearapay.lightning.net.callback.PPCodedException;
 import com.wearapay.lightning.net.model.PPCodeMessage;
@@ -13,7 +14,9 @@ import com.wearapay.lightning.uitls.ToastUtils;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import java.net.SocketTimeoutException;
 import java.util.Collection;
+import retrofit2.HttpException;
 
 /**
  * Created by lyz54 on 2017/6/28.
@@ -21,9 +24,11 @@ import java.util.Collection;
 
 public abstract class BaseObserver<T> implements Observer<T> {
   private Context context;
+  private IBaseView view;
 
-  public BaseObserver(Context context) {
-    this.context = context;
+  public BaseObserver(IBaseView baseView) {
+    this.view = baseView;
+    this.context = view.getUseContext();
   }
 
   @Override public void onSubscribe(@NonNull Disposable d) {
@@ -31,10 +36,15 @@ public abstract class BaseObserver<T> implements Observer<T> {
   }
 
   @Override public void onNext(@NonNull T t) {
-
+    if (view != null) {
+      view.hideProgress();
+    }
   }
 
   @Override public void onError(@NonNull Throwable e) {
+    if (view != null) {
+      view.hideProgress();
+    }
     e.printStackTrace();
     if (e instanceof NotLoginException) {
       context.startActivity(new Intent(context, LoginActivity.class));
@@ -63,6 +73,8 @@ public abstract class BaseObserver<T> implements Observer<T> {
           }
         }
       }
+    } else if (e instanceof HttpException || e instanceof SocketTimeoutException) {
+      ToastUtils.showShort(R.string.error_network);
     } else {
       System.out.println("sever error");
       handlerError(e);

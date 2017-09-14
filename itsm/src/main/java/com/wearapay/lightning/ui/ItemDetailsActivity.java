@@ -17,6 +17,7 @@ import com.wearapay.lightning.R;
 import com.wearapay.lightning.StatusBarCompat;
 import com.wearapay.lightning.adapter.NoteRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseSwipeBackActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.uitls.FormatUtlis;
 import java.util.ArrayList;
@@ -54,6 +55,10 @@ public class ItemDetailsActivity extends BaseSwipeBackActivity {
     getSupportActionBar().setTitle(R.string.toolbar_alarm_details_title);
     initData();
     initView();
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   private void initData() {

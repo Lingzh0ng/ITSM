@@ -42,6 +42,11 @@
     native <methods>;
 }
 
+#net
+-dontwarn com.wearapay.lightning.net.**
+-keep class com.wearapay.lightning.net.** { *;}
+-keep interface com.wearapay.lightning.net.** { *;}
+
 #RxBus utils
 -dontwarn com.wearapay.lightning.uitls.**
 -keep class com.wearapay.lightning.uitls.** { *;}
@@ -101,7 +106,23 @@
     java.lang.Object readResolve();
 }
 
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
 
+#================= tkrefreshlayout =========
+-dontwarn com.lcodecore.tkrefreshlayout.**
+-keep class com.lcodecore.tkrefreshlayout.** { *;}
+-keep interface com.lcodecore.tkrefreshlayout.** { *;}
+
+#================= OkHttp3===========
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.**{*;}
+-dontwarn okio.**
+
+#=============== Retrofit=============
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+#-keepattributes Signature-keepattributes Exceptions
 
 #=============== Gson  ===================
 # Gson specific classes
@@ -131,4 +152,12 @@
 }
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
+}
+
+#=============== GlideModule  ===================
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
 }

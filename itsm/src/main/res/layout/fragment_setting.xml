@@ -13,7 +13,7 @@
       android:gravity="center"
       android:textColor="@color/black"
       android:layout_marginTop="30dp"
-      android:text="v1.0.8"
+      android:text="v1.0.9"
       />
   <TextView
       android:layout_width="match_parent"

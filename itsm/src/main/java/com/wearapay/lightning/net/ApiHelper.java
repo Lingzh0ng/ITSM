@@ -13,6 +13,7 @@ import com.wearapay.lightning.api.IZSCReleaseRestService;
 import com.wearapay.lightning.api.IZSCUserRestService;
 import com.wearapay.lightning.bean.BAppAutoDeploy;
 import com.wearapay.lightning.bean.BChangeCount;
+import com.wearapay.lightning.bean.BChartInfo;
 import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
@@ -22,7 +23,6 @@ import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.exception.NotLoginException;
 import com.wearapay.lightning.net.converter.PPRestConverterFactory;
-import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.io.File;
 import java.io.IOException;
@@ -41,9 +41,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  * Created by lyz on 2017/7/12.
  */
 
-public class ApiHelper
-    implements ILightningRestService, IUserRestService, IZSCReleaseRestService, IZSCUserRestService,
-    ILocalHelper {
+public class ApiHelper implements ILightningRestService, IUserRestService, ILocalHelper {
 
   private Context appContext;
 
@@ -155,8 +153,8 @@ public class ApiHelper
   private ILightningRestService getAndInitEventRetrofit(OkHttpClient okHttpClient) {
     Retrofit retrofit = new Retrofit.Builder().baseUrl(LConsts.ITSM_HSOT)
         .client(okHttpClient)
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(PPRestConverterFactory.create(new Gson()))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build();
     return retrofit.create(ILightningRestService.class);
   }
@@ -164,8 +162,8 @@ public class ApiHelper
   private IUserRestService getAndInitUserRetrofit(OkHttpClient okHttpClient) {
     Retrofit retrofit = new Retrofit.Builder().baseUrl(LConsts.ITSM_HSOT)
         .client(okHttpClient)
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(PPRestConverterFactory.create(new Gson()))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build();
     return retrofit.create(IUserRestService.class);
   }
@@ -224,55 +222,61 @@ public class ApiHelper
 
   //------------------------------------------发布---------------------------------------------------
 
-  @Override public Observable<String> appDeploy(String changeNo) {
-    return lightningRestService.appDeploy(changeNo);
+  @Override public Observable<String> appDeploy(String env, String changeNo) {
+    return lightningRestService.appDeploy(env, changeNo);
   }
 
-  @Override public Observable<BAppAutoDeploy> getDeployStatus(String changeNo) {
-    return lightningRestService.getDeployStatus(changeNo);
+  @Override public Observable<BAppAutoDeploy> getDeployStatus(String env, String changeNo) {
+    return lightningRestService.getDeployStatus(env, changeNo);
   }
 
-  @Override public Observable<List<BAppAutoDeploy>> getDeployAll() {
-    return lightningRestService.getDeployAll();
+  @Override public Observable<List<BAppAutoDeploy>> getDeployAll(String env) {
+    return lightningRestService.getDeployAll(env);
   }
 
-  @Override public Observable<List<BAppAutoDeploy>> getDeployUser() {
-    return lightningRestService.getDeployUser();
+  @Override public Observable<List<BAppAutoDeploy>> getDeployUser(String env) {
+    return lightningRestService.getDeployUser(env);
   }
 
-  @Override public Observable<BChangeCount> getDeployCount() {
-    return lightningRestService.getDeployCount();
+  @Override public Observable<BChangeCount> getDeployCount(String env) {
+    return lightningRestService.getDeployCount(env);
   }
 
-  @Override public Observable<String> getDeployFinishStatus(String changeNo) {
-    return lightningRestService.getDeployFinishStatus(changeNo);
+  @Override public Observable<String> getDeployFinishStatus(String env, String changeNo) {
+    return lightningRestService.getDeployFinishStatus(env, changeNo);
+  }
+
+  //------------------------------------------图表---------------------------------------------------
+
+  @Override public Observable<List<BChartInfo>> getIncidentCharts() {
+    return lightningRestService.getIncidentCharts();
   }
 
   //------------------------------------------ZSC---------------------------------------------------
 
-  @Override public Observable<String> appZSCDeploy(String changeNo) {
-    return zscReleaseRestService.appZSCDeploy(changeNo);
-  }
-
-  @Override public Observable<BAppAutoDeploy> getZSCDeployStatus(String changeNo) {
-    return zscReleaseRestService.getZSCDeployStatus(changeNo);
-  }
-
-  @Override public Observable<String> getZSCDeployFinishStatus(String changeNo) {
-    return zscReleaseRestService.getZSCDeployFinishStatus(changeNo);
-  }
-
-  @Override public Observable<List<BAppAutoDeploy>> getZSCDeployAll() {
-    return zscReleaseRestService.getZSCDeployAll();
-  }
-
-  @Override public Observable<List<BAppAutoDeploy>> getZSCDeployUser() {
-    return zscReleaseRestService.getZSCDeployUser();
-  }
-
-  @Override public Observable<BChangeCount> getZSCDeployCount() {
-    return zscReleaseRestService.getZSCDeployCount();
-  }
+  //@Override public Observable<String> appZSCDeploy(String changeNo) {
+  //  return zscReleaseRestService.appZSCDeploy(changeNo);
+  //}
+  //
+  //@Override public Observable<BAppAutoDeploy> getZSCDeployStatus(String changeNo) {
+  //  return zscReleaseRestService.getZSCDeployStatus(changeNo);
+  //}
+  //
+  //@Override public Observable<String> getZSCDeployFinishStatus(String changeNo) {
+  //  return zscReleaseRestService.getZSCDeployFinishStatus(changeNo);
+  //}
+  //
+  //@Override public Observable<List<BAppAutoDeploy>> getZSCDeployAll() {
+  //  return zscReleaseRestService.getZSCDeployAll();
+  //}
+  //
+  //@Override public Observable<List<BAppAutoDeploy>> getZSCDeployUser() {
+  //  return zscReleaseRestService.getZSCDeployUser();
+  //}
+  //
+  //@Override public Observable<BChangeCount> getZSCDeployCount() {
+  //  return zscReleaseRestService.getZSCDeployCount();
+  //}
 
   //-----------------------------------------用户网络接口---------------------------------------------
 
@@ -289,27 +293,27 @@ public class ApiHelper
     return userRestService.getAllUser();
   }
 
-  @Override public Observable<PPResultBean> logout() {
+  @Override public Observable<ResponseBody> logout() {
     return userRestService.logout();
   }
 
   //--------------------------------------ZSC用户网络接口---------------------------------------------
-
-  @Override public Observable<String> ZSCLogin(BLoginUser loginUser) {
-    return zscLoginRetrofit.ZSCLogin(loginUser);
-  }
-
-  @Override public Observable<UserConfDto> getZSCUserInfo(String id) {
-    return zscLoginRetrofit.getZSCUserInfo(id);
-  }
-
-  @Override public Observable<List<UserConfDto>> getZSCAllUser() {
-    return zscLoginRetrofit.getZSCAllUser();
-  }
-
-  @Override public Observable<PPResultBean> ZSCLogout() {
-    return zscLoginRetrofit.ZSCLogout();
-  }
+  //
+  //@Override public Observable<String> ZSCLogin(BLoginUser loginUser) {
+  //  return zscLoginRetrofit.ZSCLogin(loginUser);
+  //}
+  //
+  //@Override public Observable<UserConfDto> getZSCUserInfo(String id) {
+  //  return zscLoginRetrofit.getZSCUserInfo(id);
+  //}
+  //
+  //@Override public Observable<List<UserConfDto>> getZSCAllUser() {
+  //  return zscLoginRetrofit.getZSCAllUser();
+  //}
+  //
+  //@Override public Observable<PPResultBean> ZSCLogout() {
+  //  return zscLoginRetrofit.ZSCLogout();
+  //}
 
   //-------------------------------------------本地接口----------------------------------------------
 
@@ -332,11 +336,11 @@ public class ApiHelper
 
   @Override public void localLogout() {
     storeEmail("");
-    storeUserId("","");
+    storeUserId("", "");
   }
 
   @Override public boolean loginStatus() {
-    return !TextUtils.isEmpty(getUserId()) && !TextUtils.isEmpty(getZSCUserId());
+    return !TextUtils.isEmpty(getUserId());
   }
 
   @Override public String getEmail() {

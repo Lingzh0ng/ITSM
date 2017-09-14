@@ -7,39 +7,49 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.wearapay.lightning.BPProgressDialog;
 import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MyItemRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.bean.IncidentDto;
-import com.wearapay.lightning.net.ApiHelper;
-import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.EditInfoActivity;
 import com.wearapay.lightning.ui.ItemDetailsActivity;
+import com.wearapay.lightning.ui.fragment.event.presenter.ItemPresenter;
+import com.wearapay.lightning.ui.fragment.event.view.IItemView;
 import com.wearapay.lightning.uitls.ActivityUtils;
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.wearapay.lightning.bean.DealStatus.DEAL_WAIT;
 
-public class ItemFragment extends BaseListFragment {
+public class ItemFragment extends BaseListFragment implements IItemView {
 
-  // TODO: Customize parameter argument names
   private static final String ARG_COLUMN_COUNT = "column-count";
   private static final String ARG_POSITION = "position";
   private static final String ARG_ITEM_COUNT = "itemCount";
   private static final String ARG_STATUS = "status";
-  // TODO: Customize parameters
   private int position = 0;
   private int mColumnCount = 1;
   private DealStatus dealStatus = DEAL_WAIT;
   private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
   private Observable<List<IncidentDto>> eventObservable;
   private int itemCount = 0;
+  private ItemPresenter itemPresenter;
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    if (getArguments() != null) {
+      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+      dealStatus = (DealStatus) getArguments().getSerializable(ARG_STATUS);
+      position = getArguments().getInt(ARG_POSITION);
+      itemCount = getArguments().getInt(ARG_ITEM_COUNT);
+    }
+    System.out.println("onCreate");
+  }
 
   public int getItemCount() {
     return itemCount;
@@ -58,14 +68,13 @@ public class ItemFragment extends BaseListFragment {
   }
 
   private List<IncidentDto> incidentDtos;
-  private BPProgressDialog progressDialog;
 
   public ItemFragment() {
   }
 
-  // TODO: Customize parameter initialization
-  @SuppressWarnings("unused") public static ItemFragment newInstance(int columnCount, int position,
-      int itemCount, DealStatus status) {
+  @SuppressWarnings("unused")
+  public static ItemFragment newInstance(int columnCount, int position, int itemCount,
+      DealStatus status) {
     ItemFragment fragment = new ItemFragment();
     fragment.itemCount = itemCount;
     Bundle args = new Bundle();
@@ -77,16 +86,9 @@ public class ItemFragment extends BaseListFragment {
     return fragment;
   }
 
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    if (getArguments() != null) {
-      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-      dealStatus = (DealStatus) getArguments().getSerializable(ARG_STATUS);
-      position = getArguments().getInt(ARG_POSITION);
-      itemCount = getArguments().getInt(ARG_ITEM_COUNT);
-    }
-    System.out.println("onCreate");
+  @Override protected BasePresenter[] initPresenters() {
+    itemPresenter = new ItemPresenter(getActivity());
+    return new BasePresenter[] { itemPresenter };
   }
 
   @Override protected void initView() {
@@ -133,7 +135,7 @@ public class ItemFragment extends BaseListFragment {
     refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
       @Override public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
         hideEmpty();
-        getEventLists();
+        itemPresenter.getEventLists(dealStatus, position);
       }
 
       @Override public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
@@ -151,74 +153,21 @@ public class ItemFragment extends BaseListFragment {
     return R.layout.fragment_item_list;
   }
 
-  private void getEventLists() {
-    switch (dealStatus) {
-      case DEAL_WAIT:
-        if (position == 0) {
-          eventObservable = ApiHelper.getInstance().getWaitUserEvent();
-        } else {
-          eventObservable = ApiHelper.getInstance().getWaitAllEvent();
-        }
-        break;
-      case DEAL_DOING:
-        if (position == 0) {
-          eventObservable = ApiHelper.getInstance().getActUserEvent();
-        } else {
-          eventObservable = ApiHelper.getInstance().getActAllEvent();
-        }
-        break;
-      case DEAL_COMPLETE:
-        if (position == 0) {
-          eventObservable = ApiHelper.getInstance().getResolveUserEvent();
-        } else {
-          eventObservable = ApiHelper.getInstance().getResolvedAllEvent();
-        }
-        break;
-      default:
-        break;
-    }
-    if (eventObservable != null) {
-      wrap(eventObservable).subscribe(new BaseObserver<List<IncidentDto>>(getActivity()) {
-        @Override public void onNext(@NonNull List<IncidentDto> incidentDtos) {
-          onFinishRefresh();
-          super.onNext(incidentDtos);
-          ItemFragment.this.incidentDtos.clear();
-          ItemFragment.this.incidentDtos.addAll(incidentDtos);
-          myItemRecyclerViewAdapter.notifyDataSetChanged();
-          if (incidentDtos.size() > 0) {
-            hideEmpty();
-          } else {
-            showEmpty();
-          }
-        }
-
-        @Override public void onError(@NonNull Throwable e) {
-          ItemFragment.this.incidentDtos.clear();
-          onFinishRefresh();
-          showEmpty();
-          super.onError(e);
-        }
-      });
+  @Override public void onItemSuccess(List<IncidentDto> incidentDtos) {
+    onFinishRefresh();
+    ItemFragment.this.incidentDtos.clear();
+    ItemFragment.this.incidentDtos.addAll(incidentDtos);
+    myItemRecyclerViewAdapter.notifyDataSetChanged();
+    if (incidentDtos.size() > 0) {
+      hideEmpty();
+    } else {
+      showEmpty();
     }
   }
 
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    System.out.println("onAttach");
-  }
-
-  @Override public void onDetach() {
-    System.out.println("onDetach");
-    super.onDetach();
-  }
-
-  @Override public void onDestroy() {
-    super.onDestroy();
-    System.out.println("onDestroy");
-  }
-
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    //bind.unbind();
+  @Override public void onItemFail() {
+    ItemFragment.this.incidentDtos.clear();
+    onFinishRefresh();
+    showEmpty();
   }
 }

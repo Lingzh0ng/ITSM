@@ -1,7 +1,5 @@
 package com.wearapay.lightning.ui.fragment.event;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -21,19 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlankFragment extends Fragment {
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_TITLE = "title";
   private static final String ARG_STATUS = "status";
   @BindView(R.id.vp) ViewPager vp;
   @BindView(R.id.tabs) TabLayout tabs;
   Unbinder unbinder;
 
-  // TODO: Rename and change types of parameters
   private String title;
   private DealStatus status;
 
-  private OnFragmentInteractionListener mListener;
   private FragmentItemAdapter fragmentItemAdapter;
   private List<ItemFragment> list;
   private int itemMyCount = 0;
@@ -99,26 +93,9 @@ public class BlankFragment extends Fragment {
     tabs.setupWithViewPager(vp);
   }
 
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
-    }
-  }
-
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    System.out.println("B onAttach");
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(
-          context.toString() + " must implement OnFragmentInteractionListener");
-    }
-  }
 
   @Override public void onDetach() {
     super.onDetach();
-    mListener = null;
   }
 
   @Override public void onDestroyView() {
@@ -132,8 +109,4 @@ public class BlankFragment extends Fragment {
     //unbinder.unbind();
   }
 
-  public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
-    void onFragmentInteraction(Uri uri);
-  }
 }

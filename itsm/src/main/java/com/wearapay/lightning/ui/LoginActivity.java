@@ -34,12 +34,12 @@ import com.wearapay.lightning.StatusBarCompat;
 import com.wearapay.lightning.base.BaseActivity;
 import com.wearapay.lightning.bean.BLoginUser;
 import com.wearapay.lightning.net.ApiHelper;
-import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.uitls.Endecrypt;
 import com.wearapay.lightning.uitls.RxBus;
+import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
-import io.reactivex.Observable;
-import io.reactivex.functions.BiFunction;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,6 +185,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
       // Show a progress spinner, and kick off a background task to
       // perform the user login attempt.
       showProgress(true);
+      //ApiHelper.getInstance().localLogout();
       login(email, password);
     }
   }
@@ -210,65 +211,40 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     BLoginUser loginUser = new BLoginUser();
     loginUser.setUsername(email);
     loginUser.setPassword(reValue);
-    wrap(Observable.zip(ApiHelper.getInstance().login(loginUser),
-        ApiHelper.getInstance().ZSCLogin(loginUser), new BiFunction<String, String, Boolean>() {
-          @Override public Boolean apply(@io.reactivex.annotations.NonNull String userToken,
-              @io.reactivex.annotations.NonNull String ZSCUserToken) throws Exception {
-            if (!TextUtils.isEmpty(userToken) && !TextUtils.isEmpty(ZSCUserToken)) {
-              ApiHelper.getInstance().storeUserId(userToken, ZSCUserToken);
-              //ApiHelper.getInstance().storeZSCUserId(ZSCUserToken);
-              ApiHelper.getInstance().storeEmail(email);
-              return true;
-            } else {
-              mPasswordView.setError(getString(R.string.error_incorrect_password));
-              mPasswordView.requestFocus();
-              return false;
-            }
-          }
-        })).subscribe(new BaseObserver<Boolean>(LoginActivity.this) {
-      @Override public void onNext(@io.reactivex.annotations.NonNull Boolean aBoolean) {
-        super.onNext(aBoolean);
+    wrap(ApiHelper.getInstance().login(loginUser)).subscribe(new Observer<String>() {
+      @Override public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+      }
+
+      @Override public void onNext(@io.reactivex.annotations.NonNull String userToken) {
         showProgress(false);
-        isLogining = false;
-        ApiHelper.getInstance().setLogining(false);
-        if (aBoolean) {
+        if (!TextUtils.isEmpty(userToken)) {
+          ApiHelper.getInstance().storeUserId(userToken);
+          //ApiHelper.getInstance().storeZSCUserId(ZSCUserToken);
+          ApiHelper.getInstance().storeEmail(email);
+          isLogining = false;
+          ApiHelper.getInstance().setLogining(false);
           RxBus.getInstance().send(new UpdateEvent(true, true));
           finish();
+        } else {
+          mPasswordView.setError(getString(R.string.error_incorrect_password));
+          mPasswordView.requestFocus();
         }
       }
 
       @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-        super.onError(e);
+
         showProgress(false);
         isLogining = false;
         ApiHelper.getInstance().setLogining(false);
+        ToastUtils.showShort("登录失败");
+
+      }
+
+      @Override public void onComplete() {
+
       }
     });
-    //wrap(ApiHelper.getInstance().login(loginUser)).subscribe(
-    //    new BaseObserver<String>(LoginActivity.this) {
-    //      @Override public void onNext(@io.reactivex.annotations.NonNull String id) {
-    //        super.onNext(id);
-    //        showProgress(false);
-    //        isLogining = false;
-    //        if (!TextUtils.isEmpty(id)) {
-    //          ApiHelper.getInstance().storeUserId(id);
-    //          ApiHelper.getInstance().storeEmail(email);
-    //          RxBus.getInstance().send(new UpdateEvent(true, true));
-    //          finish();
-    //        } else {
-    //          mPasswordView.setError(getString(R.string.error_incorrect_password));
-    //          mPasswordView.requestFocus();
-    //          ApiHelper.getInstance().setLogining(false);
-    //        }
-    //      }
-    //
-    //      @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-    //        super.onError(e);
-    //        showProgress(false);
-    //        isLogining = false;
-    //        ApiHelper.getInstance().setLogining(false);
-    //      }
-    //    });
   }
 
   @Override public void onBackPressed() {

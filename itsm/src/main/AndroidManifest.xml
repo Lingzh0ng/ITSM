@@ -19,8 +19,9 @@
       android:theme="@style/AppTheme">
     <activity
         android:name=".HomeActivity"
-        android:screenOrientation="portrait"
         android:configChanges="orientation|screenSize"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
         >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -62,6 +63,10 @@
         android:configChanges="orientation|keyboardHidden|screenSize"
         android:screenOrientation="landscape"
         android:theme="@style/AppTheme.Full"/>
+
+    <meta-data
+        android:name="com.wearapay.lightning.uitls.glide.OkHttpGlideModule"
+        android:value="GlideModule"/>
   </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import butterknife.OnClick;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.StatusBarCompat;
 import com.wearapay.lightning.base.BaseSwipeBackActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.BIncidentRemark;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.net.ApiHelper;
@@ -61,6 +62,10 @@ public class EditInfoActivity extends BaseSwipeBackActivity {
       btnItemClaim.setText(R.string.item_close);
     }
     //Serializable serializableExtra = intent.getSerializableExtra("");
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   private void updateEvenStatus(int status, BIncidentRemark note) {

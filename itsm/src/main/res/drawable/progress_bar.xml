@@ -12,10 +12,10 @@
       android:thicknessRatio="8"
       android:useLevel="false">
     <gradient
-        android:centerColor="#ff8f00"
+        android:centerColor="@color/colorPrimary"
         android:centerY="0.50"
-        android:endColor="@color/progress_dialog_bg"
-        android:startColor="@color/colorPrimary"
+        android:endColor="#90f00f"
+        android:startColor="@color/progress_dialog_bg"
         android:type="sweep"
         android:useLevel="false"/>
   </shape>

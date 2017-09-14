@@ -9,36 +9,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.MemberRecyclerViewAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
-import com.wearapay.lightning.bean.BIncidentRemark;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.DealStatus;
 import com.wearapay.lightning.bean.IncidentDto;
 import com.wearapay.lightning.bean.UserConfDto;
-import com.wearapay.lightning.net.ApiHelper;
-import com.wearapay.lightning.net.BaseObserver;
 import com.wearapay.lightning.ui.MemberDetailsActivity;
+import com.wearapay.lightning.ui.fragment.event.presenter.ItemMemberPresenter;
+import com.wearapay.lightning.ui.fragment.event.view.IItemMemberView;
 import com.wearapay.lightning.uitls.RxBus;
 import com.wearapay.lightning.uitls.ToastUtils;
 import com.wearapay.lightning.uitls.event.UpdateEvent;
-import io.reactivex.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberFragment extends BaseListFragment {
+public class MemberFragment extends BaseListFragment implements IItemMemberView {
 
   private List<UserConfDto> userConfDtos;
   private MemberRecyclerViewAdapter memberRecyclerViewAdapter;
   private IncidentDto incidentDto;
   private boolean select;
   private DealStatus dealStatus = DealStatus.DEAL_WAIT;
+  private ItemMemberPresenter itemMemberPresenter;
 
   public MemberFragment() {
   }
 
-  // TODO: Customize parameter initialization
   @SuppressWarnings("unused") public static MemberFragment newInstance() {
     MemberFragment fragment = new MemberFragment();
     Bundle args = new Bundle();
@@ -104,56 +102,11 @@ public class MemberFragment extends BaseListFragment {
   }
 
   private void eventCompile(String id) {
-    showProgress();
-    int status = LConsts.INCIDENT_OCCUR;
-    switch (dealStatus) {
-      case DEAL_WAIT:
-        status = LConsts.INCIDENT_OCCUR;
-        break;
-      case DEAL_DOING:
-        status = LConsts.INCIDENT_HANDLE;
-        break;
-    }
-    wrap(ApiHelper.getInstance()
-        .eventCompile(incidentDto.getId(), status, id, new BIncidentRemark())).subscribe(
-        new BaseObserver<IncidentDto>(getActivity()) {
-          @Override public void onNext(@NonNull IncidentDto incidentDto) {
-            super.onNext(incidentDto);
-            RxBus.getInstance().send(new UpdateEvent(true));
-            hideProgress();
-            getActivity().finish();
-          }
-
-          @Override protected void handlerError(Throwable e) {
-            super.handlerError(e);
-            ToastUtils.showLongSafe(R.string.e_general);
-            hideProgress();
-          }
-        });
+    itemMemberPresenter.eventCompile(id, dealStatus, incidentDto);
   }
 
   private void getAllMember() {
-    wrap(ApiHelper.getInstance().getAllUser()).subscribe(
-        new BaseObserver<List<UserConfDto>>(getActivity()) {
-          @Override public void onNext(@NonNull List<UserConfDto> userConfDtos) {
-            super.onNext(userConfDtos);
-            onFinishRefresh();
-            MemberFragment.this.userConfDtos.clear();
-            MemberFragment.this.userConfDtos.addAll(userConfDtos);
-            memberRecyclerViewAdapter.notifyDataSetChanged();
-            if (userConfDtos.size() > 0) {
-              hideEmpty();
-            } else {
-              showEmpty();
-            }
-          }
-
-          @Override public void onError(@NonNull Throwable e) {
-            super.onError(e);
-            showEmpty();
-            onFinishRefresh();
-          }
-        });
+    itemMemberPresenter.getAllMember();
   }
 
   @Override public void onDestroyView() {
@@ -163,5 +116,38 @@ public class MemberFragment extends BaseListFragment {
 
   @Override public void onDetach() {
     super.onDetach();
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    itemMemberPresenter = new ItemMemberPresenter(getActivity());
+    return new BasePresenter[] { itemMemberPresenter };
+  }
+
+  @Override public void onItemMemberSuccess(List<UserConfDto> userConfDtos) {
+
+
+    onFinishRefresh();
+    MemberFragment.this.userConfDtos.clear();
+    MemberFragment.this.userConfDtos.addAll(userConfDtos);
+    memberRecyclerViewAdapter.notifyDataSetChanged();
+    if (userConfDtos.size() > 0) {
+      hideEmpty();
+    } else {
+      showEmpty();
+    }
+  }
+
+  @Override public void onItemMemberFail() {
+    showEmpty();
+    onFinishRefresh();
+  }
+
+  @Override public void onEventCompileSuccess(IncidentDto incidentDto) {
+    RxBus.getInstance().send(new UpdateEvent(true));
+    getActivity().finish();
+  }
+
+  @Override public void onEventCompileFail() {
+
   }
 }

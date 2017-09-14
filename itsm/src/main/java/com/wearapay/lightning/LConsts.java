@@ -2,6 +2,7 @@ package com.wearapay.lightning;
 
 import com.wearapay.lightning.ui.fragment.event.MemberFragment;
 import com.wearapay.lightning.ui.fragment.login.UserInfoFragment;
+import com.wearapay.lightning.ui.fragment.point.PhotoViewFragment;
 
 /**
  * Created by lyz on 2017/7/13.
@@ -13,8 +14,8 @@ public class LConsts {
   public static String CAN_BACK = "can_back";
 
   public enum FragmentType {
-    Member(MemberFragment.class),
-    UserInfo(UserInfoFragment.class);
+    Member(MemberFragment.class), UserInfo(UserInfoFragment.class), PhotoView(
+        PhotoViewFragment.class);
 
     private Class clazz;
 
@@ -28,8 +29,17 @@ public class LConsts {
   }
 
   public enum ReleaseEnvironment {
-    ZSC,
-    SC;
+    ZSC("prepro"), SC("pro");
+
+    private String env;
+
+    ReleaseEnvironment(String env) {
+      this.env = env;
+    }
+
+    public String getEnv() {
+      return env;
+    }
   }
 
   public static String STATUS_WAITING = "STATUS_WAITING";
@@ -54,4 +64,8 @@ public class LConsts {
 
   public static final long MONTH_TIME = 30 * 24 * 60 * 60 * 1000L;
   public static final long YEAR_TIME = 12 * MONTH_TIME;
+
+  public static final int DAY_TIME_MIN = 24 * 60 * 60;
+  public static final int WEEK_TIME_MIN = DAY_TIME_MIN * 7;
+  public static final int MONTH_TIME_MIM = DAY_TIME_MIN * 30;
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    >
+
+  <TextView
+      android:id="@+id/tv24Hour"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:text="24小时"
+      android:textColor="@color/light"
+      android:textSize="14sp"
+      />
+  <TextView
+      android:id="@+id/tvOneWeek"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:enabled="true"
+      android:gravity="center"
+      android:text="周"
+      android:textColor="@color/black"
+      android:textSize="14sp"
+      />
+  <TextView
+      android:id="@+id/tvMonth"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:enabled="true"
+      android:gravity="center"
+      android:text="月"
+      android:textColor="@color/black"
+      android:textSize="14sp"
+      />
+
+</LinearLayout>

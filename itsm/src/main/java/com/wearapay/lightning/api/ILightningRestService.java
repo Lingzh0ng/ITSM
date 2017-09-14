@@ -2,6 +2,7 @@ package com.wearapay.lightning.api;
 
 import com.wearapay.lightning.bean.BAppAutoDeploy;
 import com.wearapay.lightning.bean.BChangeCount;
+import com.wearapay.lightning.bean.BChartInfo;
 import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.BIncidentRemark;
@@ -49,18 +50,22 @@ public interface ILightningRestService {
       @Path("id") String id, @Path("status") int status, @Path("userId") String userId,
       @Body BIncidentRemark remark);
 
-  @POST("app/deploy/{changeNo}") Observable<String> appDeploy(
+  @POST("app/deploy/{env}/{changeNo}") Observable<String> appDeploy(@Path("env") String env,
       @Path("changeNo") String changeNo);
 
-  @GET("app/deploy/status/{changeNo}") Observable<BAppAutoDeploy> getDeployStatus(
-      @Path("changeNo") String changeNo);
+  @GET("app/deploy/status/{env}/{changeNo}") Observable<BAppAutoDeploy> getDeployStatus(
+      @Path("env") String env, @Path("changeNo") String changeNo);
 
-  @GET("app/deploy/all") Observable<List<BAppAutoDeploy>> getDeployAll();
+  @GET("app/deploy/{env}/all") Observable<List<BAppAutoDeploy>> getDeployAll(
+      @Path("env") String env);
 
-  @GET("app/deploy/user") Observable<List<BAppAutoDeploy>> getDeployUser();
+  @GET("app/deploy/{env}/user") Observable<List<BAppAutoDeploy>> getDeployUser(
+      @Path("env") String env);
 
-  @GET("app/deploy/count") Observable<BChangeCount> getDeployCount();
+  @GET("app/deploy/{env}/count") Observable<BChangeCount> getDeployCount(@Path("env") String env);
 
-  @GET("app/deploy/finish/{changeNo}") Observable<String> getDeployFinishStatus(
-      @Path("changeNo")  String changeNo);
+  @GET("app/deploy/finish/{env}/{changeNo}") Observable<String> getDeployFinishStatus(
+      @Path("env") String env, @Path("changeNo") String changeNo);
+
+  @GET("app/incident/charts") Observable<List<BChartInfo>> getIncidentCharts();
 }

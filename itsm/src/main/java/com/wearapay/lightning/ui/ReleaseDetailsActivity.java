@@ -16,7 +16,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
-import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.base.BaseMvpActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.BAppAutoDeploy;
 import com.wearapay.lightning.bean.BReleaseStatus;
 import com.wearapay.lightning.net.ApiHelper;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lyz on 2017/7/31.
  */
-public class ReleaseDetailsActivity extends BaseActivity {
+public class ReleaseDetailsActivity extends BaseMvpActivity {
 
   @BindView(R.id.contentFrame) FrameLayout contentFrame;
   @BindView(R.id.logFrame) FrameLayout logFrame;
@@ -73,6 +74,10 @@ public class ReleaseDetailsActivity extends BaseActivity {
     initFragment();
   }
 
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
+  }
+
   private void initView() {
     btnSingleRelease.setEnabled(false);
     btnVerify.setEnabled(false);
@@ -84,16 +89,18 @@ public class ReleaseDetailsActivity extends BaseActivity {
     environment = (LConsts.ReleaseEnvironment) intent.getSerializableExtra("environment");
     changeNo = bAppAutoDeploy.getChangeNo();
     if (environment == LConsts.ReleaseEnvironment.SC) {
-      appDeploy = ApiHelper.getInstance().appDeploy(changeNo);
-      getDeployStatus = ApiHelper.getInstance().getDeployStatus(changeNo);
-      getDeployFinishStatus = ApiHelper.getInstance().getDeployFinishStatus(changeNo);
       vtTitle.setText("生产发布");
     } else {
-      appDeploy = ApiHelper.getInstance().appZSCDeploy(changeNo);
-      getDeployStatus = ApiHelper.getInstance().getZSCDeployStatus(changeNo);
-      getDeployFinishStatus = ApiHelper.getInstance().getZSCDeployFinishStatus(changeNo);
+      //appDeploy = ApiHelper.getInstance().appZSCDeploy(changeNo);
+      //getDeployStatus = ApiHelper.getInstance().getZSCDeployStatus(changeNo);
+      //getDeployFinishStatus = ApiHelper.getInstance().getZSCDeployFinishStatus(changeNo);
       vtTitle.setText("准生产发布");
     }
+
+    appDeploy = ApiHelper.getInstance().appDeploy(environment.getEnv(), changeNo);
+    getDeployStatus = ApiHelper.getInstance().getDeployStatus(environment.getEnv(), changeNo);
+    getDeployFinishStatus =
+        ApiHelper.getInstance().getDeployFinishStatus(environment.getEnv(), changeNo);
   }
 
   private void initFragment() {

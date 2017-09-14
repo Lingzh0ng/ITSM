@@ -1,6 +1,5 @@
 package com.wearapay.lightning;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.wearapay.lightning.base.BaseActivity;
+import com.wearapay.lightning.base.BaseMvpActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.BChangeCount;
 import com.wearapay.lightning.bean.BIncidentCount;
 import com.wearapay.lightning.bean.DealStatus;
@@ -25,6 +25,7 @@ import com.wearapay.lightning.ui.fragment.SettingFragment;
 import com.wearapay.lightning.ui.fragment.event.BlankFragment;
 import com.wearapay.lightning.ui.fragment.event.MemberFragment;
 import com.wearapay.lightning.ui.fragment.login.UserInfoFragment;
+import com.wearapay.lightning.ui.fragment.point.PointFragment;
 import com.wearapay.lightning.ui.fragment.release.ReleaseFragment;
 import com.wearapay.lightning.ui.fragment.statistical.StatisticalFragment;
 import com.wearapay.lightning.uitls.ActivityUtils;
@@ -37,15 +38,13 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function3;
 
-public class HomeActivity extends BaseActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
-    BlankFragment.OnFragmentInteractionListener {
+public class HomeActivity extends BaseMvpActivity
+    implements NavigationView.OnNavigationItemSelectedListener {
 
   private Toolbar toolbar;
   private FragmentManager supportFragmentManager;
   private Menu menu;
   private NavigationView navigationView;
-  private BPProgressDialog progressDialog;
   private Disposable subscribe;
   private BIncidentCount bIncidentCount;
   private View headerView;
@@ -112,6 +111,10 @@ public class HomeActivity extends BaseActivity
     getUserEvent();
 
     initRxBus();
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   private void initRxBus() {
@@ -244,6 +247,8 @@ public class HomeActivity extends BaseActivity
           bIncidentCount.getUserZSCChangeMgmt(), bIncidentCount.getAllZSCChangeMgmt());
     } else if (id == R.id.nav_change) {//变更
       return true;
+    } else if (id == R.id.nav_point) {//业务交易性能指标
+      blankFragment = PointFragment.newInstance();
     }
     fragmentTransaction.replace(R.id.fl, blankFragment);
     fragmentTransaction.commitAllowingStateLoss();
@@ -252,14 +257,11 @@ public class HomeActivity extends BaseActivity
     return true;
   }
 
-  @Override public void onFragmentInteraction(Uri uri) {
-
-  }
-
   public void getUserEvent(MenuItem item) {
     showProgress();
     wrap(Observable.zip(ApiHelper.getInstance().getEventCount(),
-        ApiHelper.getInstance().getDeployCount(), ApiHelper.getInstance().getZSCDeployCount(),
+        ApiHelper.getInstance().getDeployCount(LConsts.ReleaseEnvironment.SC.getEnv()),
+        ApiHelper.getInstance().getDeployCount(LConsts.ReleaseEnvironment.ZSC.getEnv()),
         new Function3<BIncidentCount, BChangeCount, BChangeCount, BIncidentCount>() {
           @Override public BIncidentCount apply(@NonNull BIncidentCount bIncidentCount,
               @NonNull BChangeCount bChangeCount, @NonNull BChangeCount bChangeCount2)
@@ -361,6 +363,8 @@ public class HomeActivity extends BaseActivity
     } else if (id == R.id.nav_release_zsc) {//准生产
       blankFragment = ReleaseFragment.newInstance(LConsts.ReleaseEnvironment.ZSC,
           bIncidentCount.getUserZSCChangeMgmt(), bIncidentCount.getAllZSCChangeMgmt());
+    } else if (id == R.id.nav_point) {//业务交易性能指标
+      blankFragment = PointFragment.newInstance();
     }
     fragmentTransaction.replace(R.id.fl, blankFragment);
     fragmentTransaction.commitAllowingStateLoss();

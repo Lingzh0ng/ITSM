@@ -18,19 +18,15 @@ import butterknife.OnClick;
 import com.wearapay.lightning.LConsts;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.FragmentStatisticalItemAdapter;
-import com.wearapay.lightning.base.BaseFragment;
+import com.wearapay.lightning.base.BaseMvpFragment;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.BCountIncident;
 import com.wearapay.lightning.bean.BCountIncidentByTime;
 import com.wearapay.lightning.bean.BIncidentTime;
 import com.wearapay.lightning.dialog.FixedDatePickerDialog;
-import com.wearapay.lightning.net.ApiHelper;
+import com.wearapay.lightning.ui.fragment.statistical.presenter.StatisticalPresenter;
+import com.wearapay.lightning.ui.fragment.statistical.view.IStatisticalView;
 import com.wearapay.lightning.uitls.AppUtils;
-import com.wearapay.lightning.uitls.ToastUtils;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +34,7 @@ import java.util.List;
 /**
  * Created by lyz on 2017/7/24.
  */
-public class StatisticalFragment extends BaseFragment {
+public class StatisticalFragment extends BaseMvpFragment implements IStatisticalView {
 
   @BindView(R.id.tabs) TabLayout tabs;
   @BindView(R.id.vp) ViewPager vp;
@@ -61,6 +57,7 @@ public class StatisticalFragment extends BaseFragment {
   private BIncidentTime selfBIncidentTime;
   private DatePickerDialog startDatePickerDialog;
   private DatePickerDialog endDatePickerDialog;
+  private StatisticalPresenter statisticalPresenter;
 
   public StatisticalFragment() {
     // Required empty public constructor
@@ -93,55 +90,7 @@ public class StatisticalFragment extends BaseFragment {
   }
 
   private void initData(BIncidentTime bIncidentTime) {
-    //if (true) {
-    //  return;
-    //}
-    showProgress();
-    wrap(ApiHelper.getInstance().getIncidentByTime(bIncidentTime)).flatMap(
-        new Function<List<BCountIncidentByTime>, ObservableSource<Boolean>>() {
-          @Override public ObservableSource<Boolean> apply(
-              @NonNull List<BCountIncidentByTime> bCountIncidentByTimes) throws Exception {
-            oneCountInfo.clear();
-            twoCountInfo.clear();
-            threeCountInfo.clear();
-            if (bCountIncidentByTimes.size() < 2) {
-              return Observable.just(false);
-            }
-            for (BCountIncidentByTime time : bCountIncidentByTimes) {
-
-              switch (time.getLevel()) {
-                case 1:
-                  if (time.getCountInfo() != null) {
-                    oneCountInfo.addAll(time.getCountInfo());
-                  }
-                  one = oneCountInfo.size();
-                  break;
-                case 2:
-                  if (time.getCountInfo() != null) {
-                    twoCountInfo.addAll(time.getCountInfo());
-                  }
-                  two = twoCountInfo.size();
-                  break;
-                case 3:
-                  if (time.getCountInfo() != null) {
-                    threeCountInfo.addAll(time.getCountInfo());
-                  }
-                  three = threeCountInfo.size();
-                  break;
-              }
-            }
-            return Observable.just(true);
-          }
-        }).subscribe(new Consumer<Boolean>() {
-      @Override public void accept(@NonNull Boolean aBoolean) throws Exception {
-        hideProgress();
-        if (aBoolean) {
-          initView();
-        } else {
-          ToastUtils.showShort(getString(R.string.item_level_count_error));
-        }
-      }
-    });
+    statisticalPresenter.getStatisticalInfo(bIncidentTime);
   }
 
   private void initView() {
@@ -254,5 +203,50 @@ public class StatisticalFragment extends BaseFragment {
     datePickerDialog.getDatePicker().setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
 
     return datePickerDialog;
+  }
+
+  @Override public void displayStatistical(List<BCountIncidentByTime> bCountIncidentByTimes) {
+    oneCountInfo.clear();
+    twoCountInfo.clear();
+    threeCountInfo.clear();
+    if (bCountIncidentByTimes.size() < 2) {
+      return;
+    }
+    for (BCountIncidentByTime time : bCountIncidentByTimes) {
+
+      switch (time.getLevel()) {
+        case 1:
+          if (time.getCountInfo() != null) {
+            oneCountInfo.addAll(time.getCountInfo());
+          }
+          one = oneCountInfo.size();
+          break;
+        case 2:
+          if (time.getCountInfo() != null) {
+            twoCountInfo.addAll(time.getCountInfo());
+          }
+          two = twoCountInfo.size();
+          break;
+        case 3:
+          if (time.getCountInfo() != null) {
+            threeCountInfo.addAll(time.getCountInfo());
+          }
+          three = threeCountInfo.size();
+          break;
+      }
+    }
+  }
+
+  @Override public void refreshUI() {
+    initView();
+  }
+
+  @Override public void dispalyFail() {
+    showMessage(R.string.item_level_count_error);
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    statisticalPresenter = new StatisticalPresenter(getActivity());
+    return new BasePresenter[] { statisticalPresenter };
   }
 }

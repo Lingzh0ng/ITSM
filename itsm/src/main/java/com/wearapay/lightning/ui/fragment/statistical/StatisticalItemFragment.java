@@ -8,6 +8,7 @@ import android.view.View;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.adapter.StatisticalItemAdapter;
 import com.wearapay.lightning.base.BaseListFragment;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.BCountIncident;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class StatisticalItemFragment extends BaseListFragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   @Override protected void initView() {

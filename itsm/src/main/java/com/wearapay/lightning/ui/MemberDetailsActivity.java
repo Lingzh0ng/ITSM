@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import com.wearapay.lightning.R;
 import com.wearapay.lightning.StatusBarCompat;
 import com.wearapay.lightning.base.BaseSwipeBackActivity;
+import com.wearapay.lightning.base.mvp.BasePresenter;
 import com.wearapay.lightning.bean.UserConfDto;
 import com.wearapay.lightning.uitls.AppUtils;
 import com.wearapay.lightning.uitls.ToastUtils;
@@ -89,6 +90,10 @@ public class MemberDetailsActivity extends BaseSwipeBackActivity {
         tvWechat.setText(weChat);
       }
     }
+  }
+
+  @Override protected BasePresenter[] initPresenters() {
+    return new BasePresenter[0];
   }
 
   @OnClick({ R.id.ivMessage, R.id.ivCall, R.id.ivEml, R.id.ivWeChat })

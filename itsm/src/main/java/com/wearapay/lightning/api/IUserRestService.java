@@ -2,9 +2,9 @@ package com.wearapay.lightning.api;
 
 import com.wearapay.lightning.bean.BLoginUser;
 import com.wearapay.lightning.bean.UserConfDto;
-import com.wearapay.lightning.net.model.PPResultBean;
 import io.reactivex.Observable;
 import java.util.List;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -21,5 +21,5 @@ public interface IUserRestService {
 
   @GET("app/user/members") Observable<List<UserConfDto>> getAllUser();
 
-  @POST("app/user/logout") Observable<PPResultBean> logout();
+  @POST("app/user/logout") Observable<ResponseBody> logout();
 }

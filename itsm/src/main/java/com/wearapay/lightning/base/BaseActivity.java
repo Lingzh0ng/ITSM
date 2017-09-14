@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-import com.wearapay.lightning.BPProgressDialog;
 import com.wearapay.lightning.R;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,34 +31,6 @@ public class BaseActivity extends RxAppCompatActivity implements ISupportActivit
         .compose(this.<T>bindToLifecycle());
   }
 
-  protected BPProgressDialog progressDialog;
-
-  public void showProgress() {
-    if (progressDialog == null) {
-      progressDialog = new BPProgressDialog(this, "");
-    }
-    progressDialog.show();
-  }
-
-  public void showProgress(String message) {
-    if (progressDialog == null) {
-      progressDialog = new BPProgressDialog(this, message);
-    }
-    progressDialog.show();
-  }
-
-  public void showProgress(int messageResourceId) {
-    if (progressDialog == null) {
-      progressDialog = new BPProgressDialog(this, getString(messageResourceId));
-    }
-    progressDialog.show();
-  }
-
-  public void hideProgress() {
-    if (progressDialog != null) {
-      progressDialog.dismiss();
-    }
-  }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {

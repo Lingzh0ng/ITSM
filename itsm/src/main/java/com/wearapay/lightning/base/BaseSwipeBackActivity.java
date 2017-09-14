@@ -1,6 +1,7 @@
 package com.wearapay.lightning.base;
 
 import android.os.Bundle;
+import com.wearapay.lightning.App;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
 import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
@@ -8,7 +9,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
 /**
  * Created by lyz on 2017/8/8.
  */
-public class BaseSwipeBackActivity extends BaseActivity implements ISwipeBackActivity {
+public abstract class BaseSwipeBackActivity extends BaseMvpActivity implements ISwipeBackActivity {
   final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
 
   public BaseSwipeBackActivity() {
@@ -17,6 +18,8 @@ public class BaseSwipeBackActivity extends BaseActivity implements ISwipeBackAct
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     this.mDelegate.onCreate(savedInstanceState);
+    boolean singleAct = App.app.getActivityList().size() > 1;
+    setSwipeBackEnable(singleAct);
   }
 
   protected void onPostCreate(Bundle savedInstanceState) {

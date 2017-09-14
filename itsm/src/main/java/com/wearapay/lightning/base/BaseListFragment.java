@@ -13,7 +13,7 @@ import com.wearapay.lightning.R;
 /**
  * Created by lyz on 2017/7/24.
  */
-public abstract class BaseListFragment extends BaseFragment {
+public abstract class BaseListFragment extends BaseMvpFragment {
 
   protected RecyclerView recyclerView;
   protected TwinklingRefreshLayout refreshLayout;
